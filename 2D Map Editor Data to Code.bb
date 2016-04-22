@@ -159,6 +159,7 @@ Function readmonkeycode()
 	Local mytxt2$
 	Local a$=""
 	Local b$=""
+	Local c$=""
 	For i = 1 To Len(mytxt$)
 		a$=Mid(mytxt$,i,1)
 		If a$="," Then b$=b$+a$
@@ -167,13 +168,13 @@ Function readmonkeycode()
 	For i=1 To Len(b$)
 		a$=Mid(b$,i,1)
 		If a$>=0 And a$<=10 
-			b$=b$+a$
+			c$=c$+a$
 		End If
 		If a$="," Then
-			map(x,y) = b
-			b$=""
+			map(x,y) = Int(c)
+			c$=""
 			x=x+1
-			If x>mw Then x=0:y=y+1
+			If x>=mw Then x=0:y=y+1
 		End If
 	Next
 End Function
