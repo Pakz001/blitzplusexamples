@@ -88,8 +88,11 @@ Repeat
 				ShowGadget txt
 			End If
 			If sg = 1
+				readmonkeycode
 				HideGadget txt
 				ShowGadget can
+				updateinterface
+				FlipCanvas can
 			End If
 		End If
 	End If
@@ -103,8 +106,8 @@ Function updateinterface()
 	SetBuffer ImageBuffer(canim)
 	Cls
 	Color 255,255,255
-	For y=0 To mh
-	For x=0 To mw
+	For y=0 To mh-1
+	For x=0 To mw-1
 		DrawImage tileim,x*tw,y*th,map(x,y)
 ;		Rect x*tw,y*th,33,33,False
 ;		Text x*tw+tw/2,y*th+th/2,map(x,y),1,1
@@ -125,9 +128,9 @@ End Function
 
 Function makemonkeycode()
 	mytxt$="Global map:Int[][] = ["+Chr(13)+Chr(10)
-	For y=0 To mh
+	For y=0 To mh-1
 	mytxt$=mytxt$+"["
-	For x=0 To mw
+	For x=0 To mw-1
 		mytxt$=mytxt$+map(x,y)
 		mytxt$=mytxt$+","
 	Next
@@ -139,4 +142,38 @@ Function makemonkeycode()
 	mytxt$=Left(mytxt$,Len(mytxt$)-3)
 	mytxt$=mytxt$+"]"	
 	SetTextAreaText txt,mytxt$
+End Function
+
+Function readmonkeycode()
+	mytxt$ = TextAreaText(txt)
+	Local cnt=0
+	Local stp=1
+	Local exitloop=False
+	While exitloop=False
+		stp=Instr(mytxt$,",",stp)
+		If stp=0 Then exitloop=True
+		stp=stp+1
+		cnt=cnt+1
+	Wend
+	If cnt <> ((mw)*(mh)) Then Notify "Not valid map data"
+	Local mytxt2$
+	Local a$=""
+	Local b$=""
+	For i = 1 To Len(mytxt$)
+		a$=Mid(mytxt$,i,1)
+		If a$="," Then b$=b$+a$
+		If a$>=0 And a$<=10 Then b$=b$+a$
+	Next
+	For i=1 To Len(b$)
+		a$=Mid(b$,i,1)
+		If a$>=0 And a$<=10 
+			b$=b$+a$
+		End If
+		If a$="," Then
+			map(x,y) = b
+			b$=""
+			x=x+1
+			If x>mw Then x=0:y=y+1
+		End If
+	Next
 End Function
