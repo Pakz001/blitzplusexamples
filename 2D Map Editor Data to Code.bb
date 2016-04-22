@@ -1,4 +1,12 @@
-Global win = CreateWindow("Tabber and Textarea and Canvas Example",100,100,800,600,0,1) 
+; This tool is a map editor that turns the data into a 
+; piece of copyable code. Its in the form of an
+; multidimensional array.
+;
+;
+;
+
+
+Global win = CreateWindow("Make Monkey array (tilemap) Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,600,win) 
 Global tab = CreateTabber(0,0,800,20,win)
 Global can = CreateCanvas(0,20,800,600,win)
@@ -28,7 +36,7 @@ InsertGadgetItem tab,1,"Canvas",1
 
 Global mytxt$
 
-SetTextAreaText txt,"Press the tabber to show text or canvas."
+makemonkeycode
 
 Global timer = CreateTimer(60)
 
