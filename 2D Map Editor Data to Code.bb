@@ -55,18 +55,18 @@ Repeat
 		If EventSource()=can
 			cmx = EventX()
 			cmy = EventY()
-		End If
-		If MouseDown(1) = True
-		If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
-			map(cmx/tw,cmy/th) = brushindex
-			updateinterface
-		End If
-		End If
-		If MouseDown(2) = True
-		If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
-			map(cmx/tw,cmy/th) = 0
-			updateinterface
-		End If
+			If MouseDown(1) = True
+			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+				map(cmx/tw,cmy/th) = brushindex
+				updateinterface
+			End If
+			End If
+			If MouseDown(2) = True
+			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+				map(cmx/tw,cmy/th) = 0
+				updateinterface
+			End If
+			End If
 		End If
 	End If
 	If we=$401
