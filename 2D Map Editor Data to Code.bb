@@ -26,6 +26,8 @@ InsertGadgetItem tab,0,"TextArea",0
 InsertGadgetItem tab,1,"Canvas",1
 
 
+Global mytxt$
+
 SetTextAreaText txt,"Press the tabber to show text or canvas."
 
 Global timer = CreateTimer(60)
@@ -73,6 +75,7 @@ Repeat
 		If EventSource() = tab
 			sg = SelectedGadgetItem(tab)
 			If sg = 0
+				makemonkeycode
 				HideGadget can
 				ShowGadget txt
 			End If
@@ -110,4 +113,22 @@ Function updateinterface()
 	Cls
 	DrawImage canim,0,0
 	FlipCanvas can
+End Function
+
+Function makemonkeycode()
+	mytxt$="Global map:Int[][] = ["+Chr(13)+Chr(10)
+	For y=0 To mh
+	mytxt$=mytxt$+"["
+	For x=0 To mw
+		mytxt$=mytxt$+map(x,y)
+		mytxt$=mytxt$+","
+	Next
+		mytxt$=Left(mytxt$,Len(mytxt$)-1)
+		mytxt$=mytxt$+"]"
+		mytxt$=mytxt$+","
+		mytxt$=mytxt$+Chr(13)+Chr(10)
+	Next
+	mytxt$=Left(mytxt$,Len(mytxt$)-3)
+	mytxt$=mytxt$+"]"	
+	SetTextAreaText txt,mytxt$
 End Function
