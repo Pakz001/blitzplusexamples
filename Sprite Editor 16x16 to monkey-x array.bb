@@ -1,4 +1,3 @@
-
 Global win = CreateWindow("Sprite Edit to Monkey array 16x16 Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,600,win) 
 Global tab = CreateTabber(0,0,800,20,win)
@@ -31,8 +30,9 @@ For i = 0 To 10
 	Text tw/2,th/2,i,1,1
 Next
 
-InsertGadgetItem tab,0,"TextArea",0
-InsertGadgetItem tab,1,"Canvas",1
+InsertGadgetItem tab,0,"MonkeyX Array",0
+InsertGadgetItem tab,1,"Visual Editor",1
+InsertGadgetItem tab,2,"Monkey Color Data",2
 
 
 Global mytxt$
@@ -58,6 +58,25 @@ Repeat
 				If RectsOverlap(cmx,cmy,1,1,680,0,32,11*th)
 					brushindex=cmy/th
 					updateinterface
+				End If
+			End If
+			If EventData() = 2
+				If RectsOverlap(cmx,cmy,1,1,680,0,32,11*th)
+					If RequestColor()=True
+						brushindex=cmy/th
+						SetBuffer ImageBuffer(tileim,brushindex)
+						Color RequestedRed(),RequestedGreen(),RequestedBlue()
+						Rect 0,0,tw,th,True
+						For x=-1 To 1
+						For y=-1 To 1
+							Color 4,4,4
+							Text tw/2+x,th/2+y,brushindex,1,1
+						Next
+						Next
+						Color 255,255,255
+						Text tw/2,th/2,brushindex,1,1						
+						updateinterface
+					End If
 				End If
 			End If
 		End If
