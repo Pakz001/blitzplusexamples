@@ -1,8 +1,12 @@
 Global win = CreateWindow("Sprite Edit to Monkey array 16x16 Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,600,win) 
+Global txt2 = CreateTextArea(0,20,800,600,win)
 Global tab = CreateTabber(0,0,800,20,win)
 Global can = CreateCanvas(0,20,800,600,win)
 
+HideGadget(txt2)
+
+Dim cols(10,3)
 
 Global tw = 640/16
 Global th = 480/16
@@ -19,6 +23,9 @@ Global tileim = CreateImage(tw,th,11)
 For i = 0 To 10
 	SetBuffer ImageBuffer(tileim,i)
 	Color 200+i*3,10+i*20,10
+	cols(i,0) = ColorRed()
+	cols(i,1) = ColorGreen()
+	cols(i,2) = ColorBlue()
 	Rect 0,0,tw,th,True
 	For x=-1 To 1
 	For y=-1 To 1
@@ -38,6 +45,7 @@ InsertGadgetItem tab,2,"Monkey Color Data",2
 Global mytxt$
 
 makemonkeycode
+makecolorcode
 
 Global timer = CreateTimer(60)
 
@@ -64,6 +72,9 @@ Repeat
 				If RectsOverlap(cmx,cmy,1,1,680,0,32,11*th)
 					If RequestColor()=True
 						brushindex=cmy/th
+						cols(brushindex,0) = RequestedRed()
+						cols(brushindex,1) = RequestedGreen()
+						cols(brushindex,2) = RequestedBlue()
 						SetBuffer ImageBuffer(tileim,brushindex)
 						Color RequestedRed(),RequestedGreen(),RequestedBlue()
 						Rect 0,0,tw,th,True
@@ -105,14 +116,24 @@ Repeat
 			If sg = 0
 				makemonkeycode
 				HideGadget can
+				HideGadget txt2
 				ShowGadget txt
 			End If
 			If sg = 1
 				readmonkeycode
+				readcolorcode
 				HideGadget txt
+				HideGadget txt2
 				ShowGadget can
+				refreshtileimages
 				updateinterface
 				FlipCanvas can
+			End If
+			If sg = 2
+				makecolorcode
+				HideGadget txt
+				HideGadget can
+				ShowGadget txt2
 			End If
 		End If
 	End If
@@ -193,5 +214,65 @@ Function readmonkeycode()
 			x=x+1
 			If x>=mw Then x=0:y=y+1
 		End If
+	Next
+End Function
+
+
+Function readcolorcode()
+	Local lst[1000]
+	a$ = TextAreaText(txt2)
+	a$ = Replace(a$,Chr(13),",")
+	a$ = Replace(a$,Chr(10),"")
+	For i=1 To Len(a$)
+		b$=Mid(a$,i,1)
+		If b$=Chr(13)
+			lst[cnt] = c$
+			cnt=cnt+1
+			c$=""
+		End If
+		If b$=","
+			lst[cnt] = c$
+			cnt=cnt+1
+			c$=""
+		End If
+		If Asc(b$) >= 48 And Asc(b$) <= 57
+			c$=c$+b$
+		End If
+	Next
+	cnt2=0
+	For i=0 To 10
+		cols(i,0) = lst[cnt2]
+		cnt2=cnt2+1
+		cols(i,1) = lst[cnt2]
+		cnt2=cnt2+1
+		cols(i,2) = lst[cnt2]
+		cnt2=cnt2+1		
+	Next
+End Function
+
+Function makecolorcode()
+	a$ = ""
+	For i=0 To 10
+		a$=a$ + cols(i,0) + ","
+		a$=a$ + cols(i,1) + ","
+		a$=a$ + cols(i,2)
+		a$=a$ + Chr(13)+Chr(10)
+	Next
+	SetTextAreaText(txt2,a$)
+End Function
+
+Function refreshtileimages()
+	For i = 0 To 10
+		SetBuffer ImageBuffer(tileim,i)
+		Color cols(i,0),cols(i,1),cols(i,2)
+		Rect 0,0,tw,th,True
+		For x=-1 To 1
+		For y=-1 To 1
+			Color 4,4,4
+			Text tw/2+x,th/2+y,i,1,1
+		Next
+		Next
+		Color 255,255,255
+		Text tw/2,th/2,i,1,1
 	Next
 End Function
