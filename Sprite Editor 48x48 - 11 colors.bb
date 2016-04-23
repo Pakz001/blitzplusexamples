@@ -1,7 +1,7 @@
 ; press 1 to 9 on canvas to change brush size
 ; press right mouse button on color to change it
 
-Global win = CreateWindow("Sprite Edit to Monkey array 16x16 Example",100,100,800,600,0,1) 
+Global win = CreateWindow("Sprite Edit to Monkey array 48x48 Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,600,win) 
 Global txt2 = CreateTextArea(0,20,800,600,win)
 Global tab = CreateTabber(0,0,800,20,win)
@@ -36,18 +36,25 @@ InsertGadgetItem tab,2,"Color Data",2
 
 Global mytxt$
 
+Global scatter = True
+
 makemonkeycode
 makecolorcode
 
 Global timer = CreateTimer(60)
 
 updateinterface
-
+.main
 Repeat 
 	we = WaitEvent()
 	If we=$102
+		If EventData() = 31
+			If scatter = False Then scatter = True Else scatter = False
+			updateinterface
+		End If
 		If EventData()>=2 And EventData()<=10
 			brushsize = EventData()-1
+			updateinterface
 			DebugLog brushsize
 		End If
 	End If
@@ -75,13 +82,17 @@ Repeat
 						updateinterface
 					End If
 				End If
+				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+					brushdown(cmx,cmy,0)
+					updateinterface
+				End If
 			End If
 		End If
 	End If
 	If we=$203
 		If EventSource()=can
 			cmx = EventX()
-			cmy = EventY()
+			cmy = EventY()			
 			If MouseDown(1) = True
 			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 				brushdown(cmx,cmy,brushindex)
@@ -95,6 +106,7 @@ Repeat
 				updateinterface
 			End If
 			End If
+			updateinterface			
 		End If
 	End If
 	If we=$401
@@ -118,6 +130,7 @@ Repeat
 			End If
 			If sg = 2
 				makecolorcode
+				makemonkeycode
 				HideGadget txt
 				HideGadget can
 				ShowGadget txt2
@@ -129,6 +142,8 @@ Repeat
 	If we=$803 Then Exit 
 Forever 
 End
+
+.funcs
 
 Function updateinterface()
 	SetBuffer ImageBuffer(canim)
@@ -145,6 +160,14 @@ Function updateinterface()
 			Rect 681,y*32,31,31,False
 		End If
 	Next
+	Color 255,255,255
+	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
+	If scatter = True Then
+		Text 10,500,"Brush Scatter on (s)"
+		Else
+		Text 10,500,"Brush Scatter off (s)"
+	End If
+	Text 10,520,"Press right mouse button on colors to change them."
 	SetBuffer CanvasBuffer(can)
 	Cls
 	DrawImage canim,0,0
@@ -273,17 +296,24 @@ Function refreshtileimages(init=False)
 	Next
 End Function
 
+.brushfuncs
 Function brushdown(cmx,cmy,ind)
-				If brushsize=1 Then map(cmx/tw,cmy/th) = ind
-				If brushsize>1 Then
-					For y=-brushsize/2 To brushsize/2
-					For x=-brushsize/2 To brushsize/2
-						If cmx/tw+x >=0 And cmx/tw+x <=mw
-						If cmy/th+y >=0 And cmy/th+y <=mh
-						map(cmx/tw+x,cmy/th+y) = ind
-						End If
-						End If
-					Next
-					Next
-				End If
+	If brushsize=1 Then map(cmx/tw,cmy/th) = ind
+	If brushsize>1 Then
+		For y=-brushsize/2 To brushsize/2
+		For x=-brushsize/2 To brushsize/2 
+			If cmx/tw+x >=0 And cmx/tw+x <=mw
+			If cmy/th+y >=0 And cmy/th+y <=mh
+			If scatter = False
+			map(cmx/tw+x,cmy/th+y) = ind
+			Else
+			If Rnd(brushsize)<2
+			map(cmx/tw+x,cmy/th+y) = ind
+			End If
+			End If
+			End If
+			End If
+		Next
+		Next
+	End If
 End Function				
