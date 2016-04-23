@@ -1,3 +1,6 @@
+; press 1 to 9 on canvas to change brush size
+; press right mouse button on color to change it
+
 Global win = CreateWindow("Sprite Edit to Monkey array 16x16 Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,600,win) 
 Global txt2 = CreateTextArea(0,20,800,600,win)
@@ -17,31 +20,14 @@ Dim map(mw,mh)
 Global canim = CreateImage(800,600)
 
 Global brushindex=0
+Global brushsize=1
 Global cmx
 Global cmy
 
 Global tileim = CreateImage(tw,th,11)
 Global tileimbig = CreateImage(32,32,11)
-For i = 0 To 10
-	SetBuffer ImageBuffer(tileim,i)
-	Color 200+i*3,10+i*20,10
-	cols(i,0) = ColorRed()
-	cols(i,1) = ColorGreen()
-	cols(i,2) = ColorBlue()
-	Rect 0,0,tw,th,True
 
-	SetBuffer ImageBuffer(tileimbig,i)
-	Color cols(i,0),cols(i,1),cols(i,2)
-	Rect 0,0,32,32,True
-	For x=-1 To 1
-	For y=-1 To 1
-		Color 4,4,4
-		Text 16/2+x,16/2+y,i,1,1
-	Next
-	Next
-	Color 255,255,255
-	Text 16/2,16/2,i,1,1
-Next
+refreshtileimages(True)
 
 InsertGadgetItem tab,0,"MonkeyX Array",0
 InsertGadgetItem tab,1,"Visual Editor",1
@@ -59,11 +45,10 @@ updateinterface
 
 Repeat 
 	we = WaitEvent()
-	
-	If we=$201
-		If EventSource() = can
-			If EventData() = 1
-			End If
+	If we=$102
+		If EventData()>=2 And EventData()<=10
+			brushsize = EventData()-1
+			DebugLog brushsize
 		End If
 	End If
 	If we=$202
@@ -74,7 +59,7 @@ Repeat
 					updateinterface
 				End If
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
-					map(cmx/tw,cmy/th) = brushindex
+					brushdown(cmx,cmy,brushindex)
 					updateinterface
 				End If
 
@@ -99,13 +84,14 @@ Repeat
 			cmy = EventY()
 			If MouseDown(1) = True
 			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
-				map(cmx/tw,cmy/th) = brushindex
+				brushdown(cmx,cmy,brushindex)
 				updateinterface
 			End If
 			End If
 			If MouseDown(2) = True
 			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
-				map(cmx/tw,cmy/th) = 0
+				;map(cmx/tw,cmy/th) = 0
+				brushdown(cmx,cmy,0)
 				updateinterface
 			End If
 			End If
@@ -262,9 +248,15 @@ Function makecolorcode()
 	SetTextAreaText(txt2,a$)
 End Function
 
-Function refreshtileimages()
+Function refreshtileimages(init=False)
 	For i = 0 To 10
 		SetBuffer ImageBuffer(tileim,i)
+		If init=True
+			Color 200+i*3,10+i*20,10
+			cols(i,0) = ColorRed()
+			cols(i,1) = ColorGreen()
+			cols(i,2) = ColorBlue()			
+		End If
 		Color cols(i,0),cols(i,1),cols(i,2)
 		Rect 0,0,tw,th,True
 		SetBuffer ImageBuffer(tileimbig,i)
@@ -280,3 +272,18 @@ Function refreshtileimages()
 		Text tw/2,th/2,i,1,1
 	Next
 End Function
+
+Function brushdown(cmx,cmy,ind)
+				If brushsize=1 Then map(cmx/tw,cmy/th) = ind
+				If brushsize>1 Then
+					For y=-brushsize/2 To brushsize/2
+					For x=-brushsize/2 To brushsize/2
+						If cmx/tw+x >=0 And cmx/tw+x <=mw
+						If cmy/th+y >=0 And cmy/th+y <=mh
+						map(cmx/tw+x,cmy/th+y) = ind
+						End If
+						End If
+					Next
+					Next
+				End If
+End Function				
