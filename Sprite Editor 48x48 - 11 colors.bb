@@ -56,6 +56,7 @@ Repeat
 			If EventData()=18;e
 				If explode = False Then explode=True Else explode = False
 				If explode = True Then scatter = False
+				updateinterface
 			End If
 			If EventData()=25 ;p
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
