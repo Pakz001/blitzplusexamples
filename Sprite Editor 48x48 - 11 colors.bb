@@ -40,7 +40,7 @@ Global mytxt$
 Global screen$="txt"
 
 Global scatter = False
-Global explode = True
+Global explode = False
 
 makemonkeycode
 makecolorcode
