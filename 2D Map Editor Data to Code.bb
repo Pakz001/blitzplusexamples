@@ -162,12 +162,12 @@ Function readmonkeycode()
 	Local c$=""
 	For i = 1 To Len(mytxt$)
 		a$=Mid(mytxt$,i,1)
-		If a$="," Then b$=b$+a$
-		If a$>=0 And a$<=10 Then b$=b$+a$
+		If a$="," Then b$=b$+a$		
+		If Asc(a$) >= 48 And Asc(a$)<= 57 Then b$=b$+a$
 	Next
 	For i=1 To Len(b$)
 		a$=Mid(b$,i,1)
-		If a$>=0 And a$<=10 
+		If Asc(a$)>=48 And Asc(a$)<=57 
 			c$=c$+a$
 		End If
 		If a$="," Then
