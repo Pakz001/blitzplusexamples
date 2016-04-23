@@ -39,7 +39,7 @@ Next
 
 InsertGadgetItem tab,0,"MonkeyX Array",0
 InsertGadgetItem tab,1,"Visual Editor",1
-InsertGadgetItem tab,2,"Monkey Color Data",2
+InsertGadgetItem tab,2,"Color Data",2
 
 
 Global mytxt$
@@ -67,6 +67,11 @@ Repeat
 					brushindex=cmy/th
 					updateinterface
 				End If
+				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+					map(cmx/tw,cmy/th) = brushindex
+					updateinterface
+				End If
+
 			End If
 			If EventData() = 2
 				If RectsOverlap(cmx,cmy,1,1,680,0,32,11*th)
