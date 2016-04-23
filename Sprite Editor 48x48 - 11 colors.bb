@@ -163,11 +163,12 @@ Function updateinterface()
 	Color 255,255,255
 	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
 	If scatter = True Then
-		Text 10,500,"Brush Scatter on (s)"
+		Text 10,500,"Brush Scatter on (press s)"
 		Else
 		Text 10,500,"Brush Scatter off (s)"
 	End If
 	Text 10,520,"Press right mouse button on colors to change them."
+	Text 600,520,"(press 1/9) brushsize"
 	SetBuffer CanvasBuffer(can)
 	Cls
 	DrawImage canim,0,0
