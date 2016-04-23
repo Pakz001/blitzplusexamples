@@ -8,6 +8,7 @@ Global tab = CreateTabber(0,0,800,20,win)
 Global can = CreateCanvas(0,20,800,600,win)
 
 HideGadget(txt2)
+HideGadget(can)
 
 Dim cols(10,3)
 
@@ -36,6 +37,8 @@ InsertGadgetItem tab,2,"Color Data",2
 
 Global mytxt$
 
+Global screen$="txt"
+
 Global scatter = True
 
 makemonkeycode
@@ -48,14 +51,22 @@ updateinterface
 Repeat 
 	we = WaitEvent()
 	If we=$102
-		If EventData() = 31
-			If scatter = False Then scatter = True Else scatter = False
-			updateinterface
-		End If
-		If EventData()>=2 And EventData()<=10
-			brushsize = EventData()-1
-			updateinterface
-			DebugLog brushsize
+		If screen="canvas"
+			If EventData()=25 ;p
+				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+					brushindex = map(cmx/tw,cmy/th)
+					updateinterface
+				End If
+			End If
+			If EventData() = 31
+				If scatter = False Then scatter = True Else scatter = False
+				updateinterface
+			End If
+			If EventData()>=2 And EventData()<=10
+				brushsize = EventData()-1
+				updateinterface
+				DebugLog brushsize
+			End If
 		End If
 	End If
 	If we=$202
@@ -113,12 +124,14 @@ Repeat
 		If EventSource() = tab
 			sg = SelectedGadgetItem(tab)
 			If sg = 0
+				screen="txt"
 				makemonkeycode
 				HideGadget can
 				HideGadget txt2
 				ShowGadget txt
 			End If
 			If sg = 1
+				screen="canvas"
 				readmonkeycode
 				readcolorcode
 				HideGadget txt
@@ -129,6 +142,7 @@ Repeat
 				FlipCanvas can
 			End If
 			If sg = 2
+				screen="txt2"
 				makecolorcode
 				makemonkeycode
 				HideGadget txt
@@ -167,6 +181,7 @@ Function updateinterface()
 		Else
 		Text 10,500,"Brush Scatter off (s)"
 	End If
+	Text 400,500,"Press p to pick color."
 	Text 10,520,"Press right mouse button on colors to change them."
 	Text 600,520,"(press 1/9) brushsize"
 	SetBuffer CanvasBuffer(can)
