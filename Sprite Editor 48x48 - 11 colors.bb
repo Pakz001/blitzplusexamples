@@ -2,8 +2,8 @@
 ; press right mouse button on color to change it
 
 Global win = CreateWindow("Sprite Edit to Monkey array 48x48 Example",100,100,800,600,0,1) 
-Global txt = CreateTextArea(0,20,800,600,win) 
-Global txt2 = CreateTextArea(0,20,800,600,win)
+Global txt = CreateTextArea(0,20,800,520,win) 
+Global txt2 = CreateTextArea(0,20,800,520,win)
 Global tab = CreateTabber(0,0,800,20,win)
 Global can = CreateCanvas(0,20,800,600,win)
 
