@@ -39,7 +39,8 @@ Global mytxt$
 
 Global screen$="txt"
 
-Global scatter = True
+Global scatter = False
+Global explode = True
 
 makemonkeycode
 makecolorcode
@@ -52,6 +53,10 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+			If EventData()=18;e
+				If explode = False Then explode=True Else explode = False
+				If explode = True Then scatter = False
+			End If
 			If EventData()=25 ;p
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 					brushindex = map(cmx/tw,cmy/th)
@@ -60,6 +65,7 @@ Repeat
 			End If
 			If EventData() = 31
 				If scatter = False Then scatter = True Else scatter = False
+				If scatter = True Then explode = False
 				updateinterface
 			End If
 			If EventData()>=2 And EventData()<=10
@@ -174,6 +180,13 @@ Function updateinterface()
 			Rect 681,y*32,31,31,False
 		End If
 	Next
+	For y=0 To 47
+	For x=0 To 47
+		a = map(x,y)
+		Color cols(a,0),cols(a,1),cols(a,2)
+		Rect x*2+660,y*2+370,2,2
+	Next
+	Next
 	Color 255,255,255
 	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
 	If scatter = True Then
@@ -181,7 +194,12 @@ Function updateinterface()
 		Else
 		Text 10,500,"Brush Scatter off (s)"
 	End If
-	Text 400,500,"Press p to pick color."
+	If explode = True
+		Text 300,500,"Brush Explode on (press e)"
+		Else
+		Text 300,500,"Brush Explode off (press e)"		
+	End If
+	Text 600,500,"Press p to pick color."
 	Text 10,520,"Press right mouse button on colors to change them."
 	Text 600,520,"(press 1/9) brushsize"
 	SetBuffer CanvasBuffer(can)
@@ -316,20 +334,39 @@ End Function
 Function brushdown(cmx,cmy,ind)
 	If brushsize=1 Then map(cmx/tw,cmy/th) = ind
 	If brushsize>1 Then
-		For y=-brushsize/2 To brushsize/2
-		For x=-brushsize/2 To brushsize/2 
-			If cmx/tw+x >=0 And cmx/tw+x <=mw
-			If cmy/th+y >=0 And cmy/th+y <=mh
-			If scatter = False
-			map(cmx/tw+x,cmy/th+y) = ind
-			Else
-			If Rnd(brushsize)<2
-			map(cmx/tw+x,cmy/th+y) = ind
-			End If
-			End If
-			End If
-			End If
-		Next
-		Next
+		If explode=False
+			For y=-brushsize/2 To brushsize/2
+			For x=-brushsize/2 To brushsize/2 
+				If cmx/tw+x >=0 And cmx/tw+x <=mw
+				If cmy/th+y >=0 And cmy/th+y <=mh
+				If scatter = False
+				map(cmx/tw+x,cmy/th+y) = ind
+				Else
+				If Rnd(brushsize)<2
+				map(cmx/tw+x,cmy/th+y) = ind
+				End If
+				End If
+				End If
+				End If
+			Next
+			Next
+		Else
+			For y=-brushsize/2 To brushsize/2
+			For x=-brushsize/2 To brushsize/2 
+				If cmx/tw+x >=0 And cmx/tw+x <=mw
+				If cmy/th+y >=0 And cmy/th+y <=mh
+					If Rnd(brushsize)<2
+					b = Rnd(cmx/tw-brushsize/2,cmx/tw+brushsize/2)
+					c = Rnd(cmy/th-brushsize/2,cmy/th+brushsize/2)
+					If b>=0 And b<=mw And c>=0 And c<=mh
+					a = map(b,c)
+					map(cmx/tw+x,cmy/th+y) = a
+					End If
+					End If
+				End If
+				End If			
+			Next
+			Next			
+		End If
 	End If
 End Function				
