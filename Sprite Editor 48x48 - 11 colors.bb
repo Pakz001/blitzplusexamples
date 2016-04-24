@@ -62,13 +62,10 @@ Repeat
 		If screen="canvas"
 			If EventData()=38;l
 				If linemode = True Then linemode = False Else linemode = True
-				If linemode = True Then	explode=False
-				If linemode = True Then scatter=False
 				If linemode = True Then linedrawn=True
 				updateinterface
 			End If
 			If EventData()=18;e
-				linemode = False
 				If explode = False Then explode=True Else explode = False
 				If explode = True Then scatter = False
 				updateinterface
@@ -80,7 +77,6 @@ Repeat
 				End If
 			End If
 			If EventData() = 31 ; s
-				linemode = False
 				If scatter = False Then scatter = True Else scatter = False
 				If scatter = True Then explode = False
 				updateinterface
@@ -118,9 +114,11 @@ Repeat
 					brushindex=cmy/32
 					updateinterface
 				End If
+				If linemode=False
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 					brushdown(cmx,cmy,brushindex)
 					updateinterface
+				End If
 				End If
 
 			End If
@@ -142,14 +140,16 @@ Repeat
 			End If
 		End If
 	End If
-	If we=$203
+	If we=$203;mousemove
 		If EventSource()=can
 			cmx = EventX()
 			cmy = EventY()			
 			If MouseDown(1) = True
+			If linemode=False
 			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 				brushdown(cmx,cmy,brushindex)
 				updateinterface
+			End If
 			End If
 			End If
 			If MouseDown(2) = True
@@ -162,7 +162,7 @@ Repeat
 			updateinterface			
 		End If
 	End If
-	If we=$401
+	If we=$401;gadgetaction
 		If EventSource() = tab
 			sg = SelectedGadgetItem(tab)
 			If sg = 0
@@ -401,7 +401,8 @@ Function makeline()
       End If
       Local exitloop=False
       While exitloop = False 
-        map(x1,y1) = brushindex
+        ; map(x1,y1) = brushindex
+		brushdown(x1*tw,y1*th,brushindex)
         If x1 = x2 
             If y1 = y2
                 exitloop = True
@@ -417,7 +418,6 @@ Function makeline()
 	Wend
 End Function
 Function brushdown(cmx,cmy,ind)
-	If linemode = True Then Return
 	If brushsize=1 Then map(cmx/tw,cmy/th) = ind
 	If brushsize>1 Then
 		If explode=False
@@ -455,4 +455,4 @@ Function brushdown(cmx,cmy,ind)
 			Next			
 		End If
 	End If
-End Function		
+End Function
