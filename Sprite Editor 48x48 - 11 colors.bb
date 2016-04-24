@@ -61,10 +61,10 @@ Repeat
 	If we=$102
 		If screen="canvas"
 			If EventData()=38;l
-				linemode=True
-				explode=False
-				scatter=False
-				linedrawn=True
+				If linemode = True Then linemode = False Else linemode = True
+				If linemode = True Then	explode=False
+				If linemode = True Then scatter=False
+				If linemode = True Then linedrawn=True
 				updateinterface
 			End If
 			If EventData()=18;e
@@ -88,7 +88,6 @@ Repeat
 			If EventData()>=2 And EventData()<=10
 				brushsize = EventData()-1
 				updateinterface
-				DebugLog brushsize
 			End If
 		End If
 	End If
@@ -384,10 +383,6 @@ Function makeline()
 	Local y1=lsy1/th
 	Local x2=lsx2/tw
 	Local y2=lsy2/th
-	DebugLog x1
-	DebugLog y1
-	DebugLog x2
-	DebugLog y2
     Local dx
 	Local dy
 	Local sx
