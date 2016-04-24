@@ -42,6 +42,13 @@ Global screen$="txt"
 Global scatter = False
 Global explode = False
 
+Global linemode = False
+Global linedrawn = False
+Global lsx1
+Global lsy1
+Global lsx2
+Global lsy2
+
 makemonkeycode
 makecolorcode
 
@@ -53,7 +60,15 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+			If EventData()=38;l
+				linemode=True
+				explode=False
+				scatter=False
+				linedrawn=True
+				updateinterface
+			End If
 			If EventData()=18;e
+				linemode = False
 				If explode = False Then explode=True Else explode = False
 				If explode = True Then scatter = False
 				updateinterface
@@ -64,7 +79,8 @@ Repeat
 					updateinterface
 				End If
 			End If
-			If EventData() = 31
+			If EventData() = 31 ; s
+				linemode = False
 				If scatter = False Then scatter = True Else scatter = False
 				If scatter = True Then explode = False
 				updateinterface
@@ -76,9 +92,29 @@ Repeat
 			End If
 		End If
 	End If
-	If we=$202
+	If we=$201;mosuedown
+		If screen = "canvas"
+		If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+			lsx1 = cmx
+			lsy1 = cmy
+			linedrawn=False
+		End If
+		End If
+	End If
+	If we=$202;mouseup
 		If EventSource() = can
 			If EventData() = 1
+				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+				If linemode = True
+					lsx2 = cmx
+					lsy2 = cmy
+					makeline
+					updateinterface
+					linedrawn=True
+				End If
+				Else
+					linedrawn=True
+				End If
 				If RectsOverlap(cmx,cmy,1,1,680,0,32,11*32)
 					brushindex=cmy/32
 					updateinterface
@@ -188,21 +224,32 @@ Function updateinterface()
 		Rect x*2+660,y*2+370,2,2
 	Next
 	Next
+	; draw the line
+	If linemode = True And linedrawn = False
+	Color 255,255,0
+	Line lsx1,lsy1,cmx,cmy
+	End If
+	; draw the brush view
 	Color 255,255,255
 	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
 	If scatter = True Then
-		Text 10,500,"Brush Scatter on (press s)"
+		Text 10,490,"Brush Scatter on (press s)"
 		Else
-		Text 10,500,"Brush Scatter off (s)"
+		Text 10,490,"Brush Scatter off (s)"
 	End If
 	If explode = True
-		Text 300,500,"Brush Explode on (press e)"
+		Text 240,490,"Brush Explode on (press e)"
 		Else
-		Text 300,500,"Brush Explode off (press e)"		
+		Text 240,490,"Brush Explode off (press e)"		
 	End If
-	Text 600,500,"Press p to pick color."
-	Text 10,520,"Press right mouse button on colors to change them."
-	Text 600,520,"(press 1/9) brushsize"
+	If linemode = True
+		Text 10,510,"Line Mode On (press l)"
+		Else
+		Text 10,510,"Line Mode Off (press l)"	
+	End If
+	Text 600,510,"Press p to pick color."
+	Text 10,530,"Press right mouse button on colors to change them."
+	Text 600,530,"(press 1/9) brushsize"
 	SetBuffer CanvasBuffer(can)
 	Cls
 	DrawImage canim,0,0
@@ -332,7 +379,50 @@ Function refreshtileimages(init=False)
 End Function
 
 .brushfuncs
+Function makeline()	
+	Local x1=lsx1/tw
+	Local y1=lsy1/th
+	Local x2=lsx2/tw
+	Local y2=lsy2/th
+	DebugLog x1
+	DebugLog y1
+	DebugLog x2
+	DebugLog y2
+    Local dx
+	Local dy
+	Local sx
+	Local sy
+	Local e
+      dx = Abs(x2 - x1)
+      sx = -1
+      If x1 < x2 Then sx = 1      
+      dy = Abs(y2 - y1)
+      sy = -1
+      If y1 < y2 Then sy = 1
+      If dx < dy Then 
+          e = dx / 2 
+      Else 
+          e = dy / 2          
+      End If
+      Local exitloop=False
+      While exitloop = False 
+        map(x1,y1) = brushindex
+        If x1 = x2 
+            If y1 = y2
+                exitloop = True
+            End If
+        End If
+        If dx > dy Then
+            x1 = x1 + sx :			e = e - dy 
+              If e < 0 Then e = e + dx : y1 = y1 + sy
+        Else
+            y1 = y1 + sy : e = e - dx 
+            If e < 0 Then e = e + dy : x1 = x1 + sx
+        EndIf
+	Wend
+End Function
 Function brushdown(cmx,cmy,ind)
+	If linemode = True Then Return
 	If brushsize=1 Then map(cmx/tw,cmy/th) = ind
 	If brushsize>1 Then
 		If explode=False
@@ -370,4 +460,4 @@ Function brushdown(cmx,cmy,ind)
 			Next			
 		End If
 	End If
-End Function				
+End Function		
