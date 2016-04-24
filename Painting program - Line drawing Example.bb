@@ -173,7 +173,11 @@ Function updateinterface()
 		Else
 		Text 10,480,"Explode brush is Off (key e)"
 	End If
-	Text 10,520,"press u to undo last move (unlimited)"
+	If linemode = True
+		Text 10,500,"Line mode is on (l)"
+		Else
+		Text 10,500,"Line mode is off (l)"
+	End If
 	SetBuffer CanvasBuffer(can)
 	Cls
 	DrawImage canim,0,0
