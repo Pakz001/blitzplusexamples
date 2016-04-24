@@ -1,6 +1,13 @@
 ; press 1 to 9 on canvas to change brush size
 ; press right mouse button on color to change it
 
+; Todo
+; insert undo feature
+; insert smudge brush feature
+; create color replace brush feature
+; create floodfill feature
+; insert both these features
+
 Global win = CreateWindow("Sprite Edit to Monkey array 48x48 Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,520,win) 
 Global txt2 = CreateTextArea(0,20,800,520,win)
