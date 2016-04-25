@@ -5,8 +5,8 @@
 ; insert undo feature
 ; insert smudge brush feature
 ; create color replace brush feature
-; create floodfill feature
-; insert both these features
+; insert color replace feature
+; inser floodfill feature
 
 Global win = CreateWindow("Sprite Edit to Monkey array 48x48 Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,520,win) 
