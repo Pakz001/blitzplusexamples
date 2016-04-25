@@ -2,7 +2,14 @@
 ; insert undo feature
 ; create color replace brush feature
 ; insert color replace feature
-; inser floodfill feature
+
+; main code ..............>>
+
+; closed list (floodfill)
+Type ol
+	Field x
+	Field y
+End Type
 
 Global win = CreateWindow("Sprite Edit to Monkey array 48x48 Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,520,win) 
@@ -69,6 +76,10 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+			If EventData()=33;f floodfill
+				floodfill()
+				updateinterface
+			End If		
 			If EventData() = 50;m s(m)udge
 				If smudge=True Then smudge = False Else smudge=True
 				If smudge = True
@@ -420,7 +431,69 @@ Function refreshtileimages(init=False)
 	Next
 End Function
 
-.brushfuncs
+.paintfuncs
+Function floodfill()
+	Local st[10]
+	st[0] = 0
+	st[1] = -1
+	st[2] = 1
+	st[3] = 0
+	st[4] = 0
+	st[5] = 1
+	st[6] = -1
+	st[7] = 0
+	If screen="canvas"
+	If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)	
+		Local sx = cmx/tw
+		Local sy = cmy/th	
+		Local fillc
+		ffaddlist(sx,sy)
+		fillc = map(sx,sy)
+		Local xm
+		Local my
+		While fflistopen() = True
+			this.ol = Last ol
+			mx = this\x
+			my = this\y
+			map(mx,my) = brushindex
+			ffremlist(mx,my)
+			For i=0 To 6 Step 2
+				x = st[i]
+				y = st[i+1]
+				If mx+x >=0 And mx+x<=mw
+				If my+y >=0 And my+y<=mh
+				If map(mx+x,my+y) = fillc
+					ffaddlist(mx+x,my+y)
+				End If
+				End If
+				End If
+			Next
+		Wend
+	End If
+	End If
+End Function
+Function ffremlist(x,y)
+	For this.ol = Each ol
+		If this\x = x And this\y = y
+			Delete this
+			Return
+		End If
+	Next
+End Function
+Function fflistopen()
+	Local cnt=0
+	For this.ol = Each ol
+		cnt=cnt+1
+	Next
+	If cnt>0 Then Return True
+	Return False
+End Function
+Function ffaddlist(x,y)	
+	this.ol = New ol
+	this\x = x
+	this\y = y
+End Function
+
 Function makeline()	
 	Local x1=lsx1/tw
 	Local y1=lsy1/th
