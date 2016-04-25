@@ -523,6 +523,7 @@ Function floodfill()
 		Local fillc
 		ffaddlist(sx,sy)
 		fillc = map(sx,sy)
+		If brushindex = fillc Then Return
 		Local xm
 		Local my
 		While fflistopen() = True
