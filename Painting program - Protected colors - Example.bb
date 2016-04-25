@@ -36,6 +36,13 @@ Repeat
 	we = WaitEvent()
 	If we=$102;keyup
 		If screen = "canvas"
+		If EventData()=25 ;p pick color
+			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+				brushindex = map(cmx/tw,cmy/th)
+				updateinterface
+			End If
+		End If		
+		; brush size 1/9
 		If EventData()>=2 And EventData()<=10
 			brushsize = EventData()-1
 			updateinterface
@@ -158,7 +165,8 @@ Function updateinterface()
 	; draw the brush view
 	Color 255,255,255
 	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
-	Text 10,500,"Brush size :"+brushsize+" (press 1 to 9)
+	Text 10,490,"Brush size :"+brushsize+" (press 1 to 9)
+	Text 10,510,"Pick color (p)"
 	
 	SetBuffer CanvasBuffer(can)
 	Cls
