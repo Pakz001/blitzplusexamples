@@ -194,9 +194,6 @@ Function updateinterface()
 	DrawImage canim,0,0
 	FlipCanvas can
 End Function
-
-
-
 Function refreshtileimages(init=False)
 	For i = 0 To 10
 		SetBuffer ImageBuffer(tileim,i)
@@ -221,7 +218,6 @@ Function refreshtileimages(init=False)
 		Text tw/2,th/2,i,1,1
 	Next
 End Function
-
 .paintfuncs
 Function floodfill()
 	Local st[10]
@@ -240,6 +236,7 @@ Function floodfill()
 		Local fillc
 		ffaddlist(sx,sy)
 		fillc = map(sx,sy)
+		If brushindex = fillc Then Return
 		Local xm
 		Local my
 		While fflistopen() = True
@@ -263,7 +260,6 @@ Function floodfill()
 	End If
 	End If
 End Function
-
 Function ffremlist(x,y)
 	For this.ol = Each ol
 		If this\x = x And this\y = y
@@ -285,7 +281,6 @@ Function ffaddlist(x,y)
 	this\x = x
 	this\y = y
 End Function
-
 Function makeline()	
 	Local x1=lsx1/tw
 	Local y1=lsy1/th
