@@ -27,8 +27,8 @@ Global th = 480/mh
 Dim map(mw,mh)
 Global canim = CreateImage(800,600)
 
-Global brushindex=0
-Global brushsize=1
+Global brushindex=4
+Global brushsize=4
 Global cmx
 Global cmy
 
@@ -48,6 +48,7 @@ Global screen$="txt"
 
 Global scatter = False
 Global explode = False
+Global normal = True
 
 Global linemode = False
 Global linedrawn = False
@@ -67,6 +68,12 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+			If EventData()=49;n
+				normal = True
+				scatter = False
+				explode = False
+				updateinterface
+			End If
 			If EventData()=38;l
 				If linemode = True Then linemode = False Else linemode = True
 				If linemode = True Then linedrawn=True
@@ -75,6 +82,8 @@ Repeat
 			If EventData()=18;e
 				If explode = False Then explode=True Else explode = False
 				If explode = True Then scatter = False
+				If explode = True Then normal = False
+				If explode = False Then normal = True
 				updateinterface
 			End If
 			If EventData()=25 ;p
@@ -86,9 +95,11 @@ Repeat
 			If EventData() = 31 ; s
 				If scatter = False Then scatter = True Else scatter = False
 				If scatter = True Then explode = False
+				If scatter = True Then normal = False
+				If scatter = False Then normal = True
 				updateinterface
 			End If
-			If EventData()>=2 And EventData()<=10
+			If EventData()>=2 And EventData()<=10 ; 1 to 9
 				brushsize = EventData()-1
 				updateinterface
 			End If
@@ -238,15 +249,20 @@ Function updateinterface()
 	; draw the brush view
 	Color 255,255,255
 	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
-	If scatter = True Then
-		Text 10,490,"Brush Scatter on (press s)"
+	If normal = True
+		Text 10,490,"Brush normal on (press n)"
 		Else
-		Text 10,490,"Brush Scatter off (s)"
+		Text 10,490,"Brush normal off (n)"		
+	End If
+	If scatter = True Then
+		Text 260,490,"Brush Scatter on (press s)"
+		Else
+		Text 260,490,"Brush Scatter off (s)"
 	End If
 	If explode = True
-		Text 240,490,"Brush Explode on (press e)"
+		Text 520,490,"Brush Explode on (press e)"
 		Else
-		Text 240,490,"Brush Explode off (press e)"		
+		Text 520,490,"Brush Explode off (press e)"		
 	End If
 	If linemode = True
 		Text 10,510,"Line Mode On (press l)"
@@ -427,23 +443,31 @@ End Function
 Function brushdown(cmx,cmy,ind)
 	If brushsize=1 Then map(cmx/tw,cmy/th) = ind
 	If brushsize>1 Then
-		If explode=False
+		If normal=True
 			For y=-brushsize/2 To brushsize/2
 			For x=-brushsize/2 To brushsize/2 
 				If cmx/tw+x >=0 And cmx/tw+x <=mw
 				If cmy/th+y >=0 And cmy/th+y <=mh
-				If scatter = False
 				map(cmx/tw+x,cmy/th+y) = ind
-				Else
+				End If
+				End If
+			Next
+			Next
+		End If
+		If scatter=True
+			For y=-brushsize/2 To brushsize/2
+			For x=-brushsize/2 To brushsize/2 
+				If cmx/tw+x >=0 And cmx/tw+x <=mw
+				If cmy/th+y >=0 And cmy/th+y <=mh
 				If Rnd(brushsize)<2
 				map(cmx/tw+x,cmy/th+y) = ind
 				End If
 				End If
 				End If
-				End If
 			Next
 			Next
-		Else
+		End If
+		If explode = True
 			For y=-brushsize/2 To brushsize/2
 			For x=-brushsize/2 To brushsize/2 
 				If cmx/tw+x >=0 And cmx/tw+x <=mw
