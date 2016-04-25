@@ -1,9 +1,5 @@
-; press 1 to 9 on canvas to change brush size
-; press right mouse button on color to change it
-
 ; Todo
 ; insert undo feature
-; insert smudge brush feature
 ; create color replace brush feature
 ; insert color replace feature
 ; inser floodfill feature
@@ -29,6 +25,8 @@ Global canim = CreateImage(800,600)
 
 Global brushindex=4
 Global brushsize=4
+Global lcmx ; previous mouse pos
+Global lcmy
 Global cmx
 Global cmy
 
@@ -49,6 +47,9 @@ Global screen$="txt"
 Global scatter = False
 Global explode = False
 Global normal = True
+Global smudge = False
+Global smudgeint = 5 ; smudge intensity (higher = less)
+
 
 Global linemode = False
 Global linedrawn = False
@@ -68,7 +69,18 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
-			If EventData()=49;n
+			If EventData() = 50;m s(m)udge
+				If smudge=True Then smudge = False Else smudge=True
+				If smudge = True
+					scatter=False
+					explode=False
+					normal=False
+					Else
+					normal = True
+				End If
+				updateinterface				
+			End If
+			If EventData()=49;n normal brush
 				normal = True
 				scatter = False
 				explode = False
@@ -160,6 +172,8 @@ Repeat
 	End If
 	If we=$203;mousemove
 		If EventSource()=can
+			lcmx = cmx
+			lcmy = cmy
 			cmx = EventX()
 			cmy = EventY()			
 			If MouseDown(1) = True
@@ -250,28 +264,34 @@ Function updateinterface()
 	Color 255,255,255
 	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
 	If normal = True
-		Text 10,490,"Brush normal on (press n)"
+		Text 10,490,"Brush normal on (n)"
 		Else
 		Text 10,490,"Brush normal off (n)"		
 	End If
 	If scatter = True Then
-		Text 260,490,"Brush Scatter on (press s)"
+		Text 180,490,"Brush Scatter on (s)"
 		Else
-		Text 260,490,"Brush Scatter off (s)"
+		Text 180,490,"Brush Scatter off (s)"
+	End If
+	If smudge = True Then
+		Text 180,510,"Brush Smudge On (m)"
+		Else
+		Text 180,510,"Brush Smudge Off (m)"
 	End If
 	If explode = True
-		Text 520,490,"Brush Explode on (press e)"
+		Text 380,490,"Brush Explode on (e)"
 		Else
-		Text 520,490,"Brush Explode off (press e)"		
+		Text 380,490,"Brush Explode off (e)"		
 	End If
 	If linemode = True
-		Text 10,510,"Line Mode On (press l)"
+		Text 10,510,"Line Mode On (l)"
 		Else
-		Text 10,510,"Line Mode Off (press l)"	
+		Text 10,510,"Line Mode Off (l)"	
 	End If
-	Text 600,510,"Press p to pick color."
+	Text 380,510,"Pick color (p)"
+	Text 580,490,"Flood fill (f)"
 	Text 10,530,"Press right mouse button on colors to change them."
-	Text 600,530,"(press 1/9) brushsize"
+	Text 580,530,"brushsize (1/9)"
 	SetBuffer CanvasBuffer(can)
 	Cls
 	DrawImage canim,0,0
@@ -443,6 +463,46 @@ End Function
 Function brushdown(cmx,cmy,ind)
 	If brushsize=1 Then map(cmx/tw,cmy/th) = ind
 	If brushsize>1 Then
+		Local cnt
+		Local brushbuffer[10*10]
+		If smudge=True
+			If lcmx<>cmx And lcmy<>cmy	
+			; put data under brush (prev pos)
+			; in temp array
+			cnt=0
+			For y=-brushsize/2 To brushsize/2
+			For x=-brushsize/2 To brushsize/2
+				brushbuffer[cnt]=-1
+				If lcmx/tw+x >=0 And lcmx/tw+x <=mw
+				If lcmy/th+y >=0 And lcmy/th+y <=mh			
+				brushbuffer[cnt] = map(lcmx/tw+x,lcmy/th+y)
+				End If
+				End If
+				cnt=cnt+1
+			Next
+			Next
+			; copy temp array data to
+			; current brush position
+			; uses intensity(rand)
+			cnt=0
+			For y=-brushsize/2 To brushsize/2
+			For x=-brushsize/2 To brushsize/2
+				If cmx/tw+x >=0 And cmx/tw+x <=mw
+				If cmy/th+y >=0 And cmy/th+y <=mh			
+				If brushbuffer[cnt]>-1
+				If Rnd(smudgeint)<2
+				map(cmx/tw+x,cmy/th+y) = brushbuffer[cnt]
+				End If
+				End If
+				End If
+				End If
+				cnt=cnt+1
+			Next
+			Next
+			
+			;
+			EndIf			
+		End If
 		If normal=True
 			For y=-brushsize/2 To brushsize/2
 			For x=-brushsize/2 To brushsize/2 
