@@ -1,15 +1,28 @@
 ; Todo
-; insert undo feature
 ; create color replace brush feature
 ; insert color replace feature
 
 ; main code ..............>>
+
+; map width
+Global mw = 48
+Global mh = 48
+; tile width
+Global tw = 640/mw
+Global th = 480/mh
 
 ; closed list (floodfill)
 Type ol
 	Field x
 	Field y
 End Type
+
+; for the undo
+Type unre
+	Field map[48*48] ; sprite sheet width x height <<<<<<<<<
+	Field cols[12*3]
+End Type
+Global undoredo.unre = New unre
 
 Global win = CreateWindow("Sprite Edit to Monkey array 48x48 Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,520,win) 
@@ -22,10 +35,6 @@ HideGadget(can)
 
 Dim cols(10,3)
 
-Global mw = 48
-Global mh = 48
-Global tw = 640/mw
-Global th = 480/mh
 
 Dim map(mw,mh)
 Global canim = CreateImage(800,600)
@@ -71,11 +80,17 @@ makecolorcode
 Global timer = CreateTimer(60)
 
 updateinterface
+addundo
 .main
 Repeat 
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+			If EventData()=22;u undo
+				undoback
+				refreshtileimages
+				updateinterface
+			End If			
 			If EventData()=33;f floodfill
 				floodfill()
 				updateinterface
@@ -172,6 +187,7 @@ Repeat
 						cols(brushindex,2) = RequestedBlue()
 						refreshtileimages
 						updateinterface
+						addundo
 					End If
 				End If
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
@@ -179,6 +195,9 @@ Repeat
 					updateinterface
 				End If
 			End If
+			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+				addundo
+			End If			
 		End If
 	End If
 	If we=$203;mousemove
@@ -301,12 +320,66 @@ Function updateinterface()
 	End If
 	Text 380,510,"Pick color (p)"
 	Text 580,490,"Flood fill (f)"
+	Text 580,510,"Undo (u)"
 	Text 10,530,"Press right mouse button on colors to change them."
 	Text 580,530,"brushsize (1/9)"
 	SetBuffer CanvasBuffer(can)
 	Cls
 	DrawImage canim,0,0
 	FlipCanvas can
+End Function
+
+
+Function addundo()
+	undoredo.unre = New unre
+	cnt=0
+	For y=0 To 47
+	For x=0 To 47
+		undoredo\map[cnt] = map(x,y)
+		cnt=cnt+1
+	Next
+	Next
+	cnt3=0
+	For i=0 To 11*3
+		undoredo\cols[cnt3] = cols(cnt1,cnt2)
+		cnt2=cnt2+1
+		If cnt2>3 Then cnt2 =0:cnt1=cnt1+1
+		cnt3=cnt3+1
+	Next
+	cnt=0
+	For ii.unre = Each unre
+	cnt=cnt+1
+	Next
+	DebugLog "num undo "+cnt
+End Function
+
+Function undoback()
+	Local c=0
+	For ii.unre = Each unre
+	c=c+1
+	Next
+	DebugLog "initialize undo "+c
+	If c<3 Then Return
+	DebugLog "undoing'
+	Local cnt=0
+	undoredo.unre = Last unre
+	Delete undoredo
+	undoredo.unre = Last unre
+	For y=0 To 47
+	For x=0 To 47
+		map(x,y) = undoredo\map[cnt]
+		cnt=cnt+1			
+	Next
+	Next	
+	cnt1=0
+	cnt2=0
+	cnt3=0
+	For i=0 To 11*3
+		cols(cnt1,cnt2) = undoredo\cols[cnt3]
+		cnt2=cnt2+1
+		If cnt2>3 Then cnt2 =0:cnt1=cnt1+1
+		cnt3=cnt3+1
+	Next
 End Function
 
 Function makemonkeycode()
