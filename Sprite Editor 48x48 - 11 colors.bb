@@ -94,6 +94,7 @@ Repeat
 			If EventData()=33;f floodfill
 				floodfill()
 				updateinterface
+				addundo
 			End If		
 			If EventData() = 50;m s(m)udge
 				If smudge=True Then smudge = False Else smudge=True
@@ -112,7 +113,7 @@ Repeat
 				explode = False
 				updateinterface
 			End If
-			If EventData()=38;l
+			If EventData()=38;l line mode
 				If linemode = True Then linemode = False Else linemode = True
 				If linemode = True Then linedrawn=True
 				updateinterface
@@ -124,13 +125,13 @@ Repeat
 				If explode = False Then normal = True
 				updateinterface
 			End If
-			If EventData()=25 ;p
+			If EventData()=25 ;p pick color
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 					brushindex = map(cmx/tw,cmy/th)
 					updateinterface
 				End If
 			End If
-			If EventData() = 31 ; s
+			If EventData() = 31 ; s scatter
 				If scatter = False Then scatter = True Else scatter = False
 				If scatter = True Then explode = False
 				If scatter = True Then normal = False
