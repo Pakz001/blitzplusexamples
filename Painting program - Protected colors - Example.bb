@@ -199,14 +199,20 @@ Function refreshtileimages(init=False)
 End Function
 .brushfuncs
 Function brushdown(cmx,cmy,ind)
-	If brushsize=1 Then map(cmx/tw,cmy/th) = ind
+	If brushsize=1 Then 
+		If protcol(map(cmx/tw,cmy/th)) = False
+			map(cmx/tw,cmy/th) = ind
+		End If
+	End If
 	If brushsize>1 Then
 		For y=-brushsize/2 To brushsize/2
 		For x=-brushsize/2 To brushsize/2 
 			If cmx/tw+x >=0 And cmx/tw+x <=mw
 			If cmy/th+y >=0 And cmy/th+y <=mh
 			If protcol(map(cmx/tw+x,cmy/th+y)) = False
+			If protcol(map(cmx/tw+x,cmy/th+y)) = False
 			map(cmx/tw+x,cmy/th+y) = ind
+			End If
 			End If
 			End If
 			End If
