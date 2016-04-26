@@ -12,6 +12,10 @@ Type ol
 	Field x
 	Field y
 End Type
+Type cl
+	Field x
+	Field y
+End Type
 
 ; for the undo
 Type unre
@@ -20,7 +24,7 @@ Type unre
 End Type
 Global undoredo.unre = New unre
 
-Global win = CreateWindow("Sprite Edit to Monkey array 48x48 Example",100,100,800,600,0,1) 
+Global win = CreateWindow("Sprite Editor 48x48 Example",100,100,800,600,0,1) 
 Global txt = CreateTextArea(0,20,800,520,win) 
 Global txt2 = CreateTextArea(0,20,800,520,win)
 Global tab = CreateTabber(0,0,800,20,win)
@@ -85,6 +89,11 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+			If EventData()=24;o outline colorarea				
+				outlinefill
+				updateinterface
+				addundo
+			End If
 			If EventData()=22;u undo
 				undoback
 				refreshtileimages
@@ -320,35 +329,37 @@ Function updateinterface()
 	Color 255,255,255
 	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
 	If normal = True
-		Text 10,490,"Brush normal on (n)"
+		Text 10,480,"Brush normal on (n)"
 		Else
-		Text 10,490,"Brush normal off (n)"		
+		Text 10,480,"Brush normal off (n)"		
 	End If
 	If scatter = True Then
-		Text 180,490,"Brush Scatter on (s)"
+		Text 180,480,"Brush Scatter on (s)"
 		Else
-		Text 180,490,"Brush Scatter off (s)"
+		Text 180,480,"Brush Scatter off (s)"
 	End If
 	If smudge = True Then
-		Text 180,510,"Brush Smudge On (m)"
+		Text 180,495,"Brush Smudge On (m)"
 		Else
-		Text 180,510,"Brush Smudge Off (m)"
+		Text 180,495,"Brush Smudge Off (m)"
 	End If
 	If explode = True
-		Text 380,490,"Brush Explode on (e)"
+		Text 380,480,"Brush Explode on (e)"
 		Else
-		Text 380,490,"Brush Explode off (e)"		
+		Text 380,480,"Brush Explode off (e)"		
 	End If
 	If linemode = True
-		Text 10,510,"Line Mode On (l)"
+		Text 10,495,"Line Mode On (l)"
 		Else
-		Text 10,510,"Line Mode Off (l)"	
+		Text 10,495,"Line Mode Off (l)"	
 	End If
-	Text 380,510,"Pick color (p)"
-	Text 580,490,"Flood fill (f)"
-	Text 580,510,"Undo (u)"
-	Text 10,530,"Press right mouse button on colors to change them."
-	Text 580,530,"brushsize (1/9)"
+	Text 10,510,"Outline at pos (o)"
+	Text 380,495,"Pick color (p)"
+	Text 580,480,"Flood fill (f)"
+	Text 580,495,"Undo (u)"
+	Text 10,525,"Press rmb on colors to change them."
+	Text 580,525,"Size :"+brushsize
+	Text 580,510,"brushsize (1/9)"
 	SetBuffer CanvasBuffer(can)
 	Cls
 	DrawImage canim,0,0
@@ -524,7 +535,105 @@ Function refreshtileimages(init=False)
 	Next
 End Function
 .paintfuncs
+Function outlinefill()
+	For this.ol = Each ol
+		Delete this
+	Next
+	For that.cl = Each cl
+		Delete that
+	Next
+	
+	Local fillc
+
+	Local st[10]
+	st[0] = 0
+	st[1] = -1
+	st[2] = 1
+	st[3] = 0
+	st[4] = 0
+	st[5] = 1
+	st[6] = -1
+	st[7] = 0
+	If screen="canvas"
+	If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)	
+		
+		Local sx = cmx/tw
+		Local sy = cmy/th	
+
+		ffaddlist(sx,sy)
+		fillc = map(sx,sy)
+		Local xm
+		Local my
+		While fflistopen() = True
+			this.ol = Last ol
+			mx = this\x
+			my = this\y
+			Delete this
+			a.cl = New cl
+			a\x = mx
+			a\y = my
+			For i=0 To 6 Step 2
+				x = st[i]
+				y = st[i+1]
+				If mx+x >=0 And mx+x<=mw
+				If my+y >=0 And my+y<=mh
+				If isonclosedlist(mx+x,my+y)=False
+				If map(mx+x,my+y) = fillc				
+					z.ol = New ol
+					z\x = mx+x
+					z\y = my+y
+				End If
+				End If
+				End If
+				End If
+			Next
+		Wend
+	End If
+	End If
+	For e.cl = Each cl
+		x1 = e\x
+		y1 = e\y
+		For i=0 To 6 Step 2
+			x2 = st[i]
+			y2 = st[i+1]
+			If x1+x2 >=0 And x1+x2<=mw
+			If y1+y2 >=0 And y1+y2<=mh
+				If map(x1+x2,y1+y2)<>fillc
+					map(x1+x2,y1+y2)=brushindex
+				End If
+			End If
+			End If
+		Next
+	Next
+DebugLog cnt
+End Function
+
+
+Function isonclosedlist(x,y)
+	For this.cl = Each cl
+		If this\x = x And this\y = y Then Return True
+	Next
+	Return False
+End Function
+
+
+Function olistopen()
+	Local cnt=0
+	For this.ol = Each ol
+	cnt=cnt+1
+	If cnt>0 Then Return True
+	Next
+	Return False
+End Function
+
+
 Function floodfill()
+	For aa.ol = Each ol
+		Delete aa		
+	Next
+	For bb.cl = Each cl
+		Delete	bb
+	Next
 	Local st[10]
 	st[0] = 0
 	st[1] = -1
