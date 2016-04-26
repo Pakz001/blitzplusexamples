@@ -1,7 +1,3 @@
-; Todo
-; create color replace brush feature
-; insert color replace feature
-
 ; main code ..............>>
 
 ; map width
@@ -34,6 +30,9 @@ HideGadget(txt2)
 HideGadget(can)
 
 Dim cols(10,3)
+; This array contains the colors that are protected
+; true/false
+Dim protcol(10)
 
 
 Dim map(mw,mh)
@@ -167,6 +166,15 @@ Repeat
 				Else
 					linedrawn=True
 				End If
+				; undestructable checkboxes
+				If RectsOverlap(cmx,cmy,1,1,712,0,16,11*32)					
+					If protcol(cmy/32) = True
+						protcol(cmy/32) = False
+						Else
+						protcol(cmy/32) = True
+					End If					
+					updateinterface
+				End If				
 				If RectsOverlap(cmx,cmy,1,1,680,0,32,11*32)
 					brushindex=cmy/32
 					updateinterface
@@ -191,6 +199,18 @@ Repeat
 						addundo
 					End If
 				End If
+				; undestructable checkboxes
+				If RectsOverlap(cmx,cmy,1,1,712,0,16,11*32)					
+					For i=0 To 10
+					protcol(i)=False
+					Next
+					If protcol(cmy/32) = True
+						protcol(cmy/32) = False
+						Else
+						protcol(cmy/32) = True
+					End If
+					updateinterface
+				End If					
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 					brushdown(cmx,cmy,0)
 					updateinterface
@@ -278,6 +298,11 @@ Function updateinterface()
 		If brushindex = y
 			Rect 681,y*32,31,31,False
 		End If
+		; the indestructable checkbox
+		Rect 712,y*32,16,32,False
+		If protcol(y) = True
+			Rect 714,y*32,12,30,True
+		End If		
 	Next
 	For y=0 To 47
 	For x=0 To 47
@@ -382,7 +407,6 @@ Function undoback()
 		cnt3=cnt3+1
 	Next
 End Function
-
 Function makemonkeycode()
 	mytxt$="Global sprite:Int[][] = ["+Chr(13)+Chr(10)
 	For y=0 To mh-1
@@ -400,7 +424,6 @@ Function makemonkeycode()
 	mytxt$=mytxt$+"]"	
 	SetTextAreaText txt,mytxt$
 End Function
-
 Function readmonkeycode()
 	mytxt$ = TextAreaText(txt)
 	Local cnt=0
@@ -435,8 +458,6 @@ Function readmonkeycode()
 		End If
 	Next
 End Function
-
-
 Function readcolorcode()
 	Local lst[1000]
 	a$ = TextAreaText(txt2)
@@ -468,7 +489,6 @@ Function readcolorcode()
 		cnt2=cnt2+1		
 	Next
 End Function
-
 Function makecolorcode()
 	a$ = ""
 	For i=0 To 10
@@ -479,7 +499,6 @@ Function makecolorcode()
 	Next
 	SetTextAreaText(txt2,a$)
 End Function
-
 Function refreshtileimages(init=False)
 	For i = 0 To 10
 		SetBuffer ImageBuffer(tileim,i)
@@ -504,7 +523,6 @@ Function refreshtileimages(init=False)
 		Text tw/2,th/2,i,1,1
 	Next
 End Function
-
 .paintfuncs
 Function floodfill()
 	Local st[10]
@@ -568,7 +586,6 @@ Function ffaddlist(x,y)
 	this\x = x
 	this\y = y
 End Function
-
 Function makeline()	
 	Local x1=lsx1/tw
 	Local y1=lsy1/th
@@ -609,7 +626,11 @@ Function makeline()
 	Wend
 End Function
 Function brushdown(cmx,cmy,ind)
-	If brushsize=1 Then map(cmx/tw,cmy/th) = ind
+	If brushsize=1 Then 
+		If protcol(map(cmx/tw+x,cmy/th+y)) = False
+			map(cmx/tw,cmy/th) = ind
+		End If
+	End If
 	If brushsize>1 Then
 		Local cnt
 		Local brushbuffer[10*10]
@@ -639,7 +660,9 @@ Function brushdown(cmx,cmy,ind)
 				If cmy/th+y >=0 And cmy/th+y <=mh			
 				If brushbuffer[cnt]>-1
 				If Rnd(smudgeint)<2
+				If protcol(map(cmx/tw+x,cmy/th+y)) = False
 				map(cmx/tw+x,cmy/th+y) = brushbuffer[cnt]
+				End If
 				End If
 				End If
 				End If
@@ -656,7 +679,9 @@ Function brushdown(cmx,cmy,ind)
 			For x=-brushsize/2 To brushsize/2 
 				If cmx/tw+x >=0 And cmx/tw+x <=mw
 				If cmy/th+y >=0 And cmy/th+y <=mh
+				If protcol(map(cmx/tw+x,cmy/th+y)) = False
 				map(cmx/tw+x,cmy/th+y) = ind
+				End If
 				End If
 				End If
 			Next
@@ -668,7 +693,9 @@ Function brushdown(cmx,cmy,ind)
 				If cmx/tw+x >=0 And cmx/tw+x <=mw
 				If cmy/th+y >=0 And cmy/th+y <=mh
 				If Rnd(brushsize)<2
+				If protcol(map(cmx/tw+x,cmy/th+y)) = False
 				map(cmx/tw+x,cmy/th+y) = ind
+				End If
 				End If
 				End If
 				End If
@@ -684,8 +711,10 @@ Function brushdown(cmx,cmy,ind)
 					b = Rnd(cmx/tw-brushsize/2,cmx/tw+brushsize/2)
 					c = Rnd(cmy/th-brushsize/2,cmy/th+brushsize/2)
 					If b>=0 And b<=mw And c>=0 And c<=mh
+					If protcol(map(cmx/tw+x,cmy/th+y)) = False
 					a = map(b,c)
 					map(cmx/tw+x,cmy/th+y) = a
+					End If
 					End If
 					End If
 				End If
