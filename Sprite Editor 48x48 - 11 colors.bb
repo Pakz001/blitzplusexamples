@@ -605,7 +605,7 @@ Function outlinefill()
 			End If
 		Next
 	Next
-DebugLog cnt
+
 End Function
 
 
