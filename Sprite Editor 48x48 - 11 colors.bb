@@ -627,7 +627,7 @@ Function makeline()
 End Function
 Function brushdown(cmx,cmy,ind)
 	If brushsize=1 Then 
-		If protcol(map(cmx/tw+x,cmy/th+y)) = False
+		If protcol(map(cmx/tw,cmy/th)) = False
 			map(cmx/tw,cmy/th) = ind
 		End If
 	End If
