@@ -42,6 +42,19 @@ Dim protcol(10)
 Dim map(mw,mh)
 Global canim = CreateImage(800,600)
 
+
+; shade map part
+Dim shademap(mw,mh) ; create the shading true/false pixelmap x 
+
+; make the shadegrid
+Local x2=0
+For y=0 To mh-1 Step 2
+For x=0 To mw-1 Step 2
+	shademap(x,y) = True
+	shademap(x+1,y+1) = True
+Next
+Next
+
 Global brushindex=4
 Global brushsize=4
 Global lcmx ; previous mouse pos
@@ -68,7 +81,7 @@ Global explode = False
 Global normal = True
 Global smudge = False
 Global smudgeint = 5 ; smudge intensity (higher = less)
-
+Global shade = False
 
 Global linemode = False
 Global linedrawn = False
@@ -89,6 +102,10 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+			If EventData()=35
+				If shade=True Then shade=False Else shade=True
+				updateinterface
+			End If
 			If EventData()=24;o outline colorarea				
 				outlinefill
 				updateinterface
@@ -260,6 +277,7 @@ Repeat
 			If sg = 0
 				screen="txt"
 				makemonkeycode
+				makecolorcode
 				HideGadget can
 				HideGadget txt2
 				ShowGadget txt
@@ -343,6 +361,11 @@ Function updateinterface()
 		Else
 		Text 180,495,"Brush Smudge Off (m)"
 	End If
+	If shade = True Then
+		Text 180,515,"Shade mode on (h)"
+		Else
+		Text 180,515,"Shade mode off (h)"
+	End If
 	If explode = True
 		Text 380,480,"Brush Explode on (e)"
 		Else
@@ -353,6 +376,7 @@ Function updateinterface()
 		Else
 		Text 10,495,"Line Mode Off (l)"	
 	End If
+	
 	Text 10,510,"Outline at pos (o)"
 	Text 380,495,"Pick color (p)"
 	Text 580,480,"Flood fill (f)"
@@ -544,7 +568,6 @@ Function outlinefill()
 	Next
 	
 	Local fillc
-
 	Local st[10]
 	st[0] = 0
 	st[1] = -1
@@ -559,7 +582,6 @@ Function outlinefill()
 		
 		Local sx = cmx/tw
 		Local sy = cmy/th	
-
 		ffaddlist(sx,sy)
 		fillc = map(sx,sy)
 		Local xm
@@ -599,24 +621,26 @@ Function outlinefill()
 			If x1+x2 >=0 And x1+x2<=mw
 			If y1+y2 >=0 And y1+y2<=mh
 				If map(x1+x2,y1+y2)<>fillc
+				If shade = True
+					If shademap(x1+x2,y1+y2) = False
 					map(x1+x2,y1+y2)=brushindex
+					End If
+				End If
+				If shade=False
+				map(x1+x2,y1+y2)=brushindex			
+				End If
 				End If
 			End If
 			End If
 		Next
 	Next
-
 End Function
-
-
 Function isonclosedlist(x,y)
 	For this.cl = Each cl
 		If this\x = x And this\y = y Then Return True
 	Next
 	Return False
 End Function
-
-
 Function olistopen()
 	Local cnt=0
 	For this.ol = Each ol
@@ -625,8 +649,6 @@ Function olistopen()
 	Next
 	Return False
 End Function
-
-
 Function floodfill()
 	For aa.ol = Each ol
 		Delete aa		
@@ -664,10 +686,10 @@ Function floodfill()
 				y = st[i+1]
 				If mx+x >=0 And mx+x<=mw
 				If my+y >=0 And my+y<=mh
-				If map(mx+x,my+y) = fillc
-					ffaddlist(mx+x,my+y)
-				End If
-				End If
+					If map(mx+x,my+y) = fillc
+						ffaddlist(mx+x,my+y)
+					End If
+				End If				
 				End If
 			Next
 		Wend
@@ -770,9 +792,18 @@ Function brushdown(cmx,cmy,ind)
 				If brushbuffer[cnt]>-1
 				If Rnd(smudgeint)<2
 				If protcol(map(cmx/tw+x,cmy/th+y)) = False
-				map(cmx/tw+x,cmy/th+y) = brushbuffer[cnt]
+
+					If shade=False
+						map(cmx/tw+x,cmy/th+y) = brushbuffer[cnt]
+					End If
+					If shade = True
+						If shademap(cmx/tw+x,cmy/th+y) = False
+						map(cmx/tw+x,cmy/th+y) = brushbuffer[cnt]
+					End If				
+					End If
+				
 				End If
-				End If
+				End If							
 				End If
 				End If
 				End If
@@ -789,7 +820,14 @@ Function brushdown(cmx,cmy,ind)
 				If cmx/tw+x >=0 And cmx/tw+x <=mw
 				If cmy/th+y >=0 And cmy/th+y <=mh
 				If protcol(map(cmx/tw+x,cmy/th+y)) = False
-				map(cmx/tw+x,cmy/th+y) = ind
+					If shade = False
+						map(cmx/tw+x,cmy/th+y) = ind
+					End If
+					If shade = True
+					If shademap(cmx/tw+x,cmy/th+y) = False
+						map(cmx/tw+x,cmy/th+y) = ind
+					End If
+					End If
 				End If
 				End If
 				End If
@@ -803,7 +841,16 @@ Function brushdown(cmx,cmy,ind)
 				If cmy/th+y >=0 And cmy/th+y <=mh
 				If Rnd(brushsize)<2
 				If protcol(map(cmx/tw+x,cmy/th+y)) = False
-				map(cmx/tw+x,cmy/th+y) = ind
+				
+					If shade=False
+						map(cmx/tw+x,cmy/th+y) = ind
+					End If
+					If shade = True
+					If shademap(cmx/tw+x,cmy/th+y)=False
+						map(cmx/tw+x,cmy/th+y) = ind
+					End If
+					End If
+				
 				End If
 				End If
 				End If
@@ -821,8 +868,16 @@ Function brushdown(cmx,cmy,ind)
 					c = Rnd(cmy/th-brushsize/2,cmy/th+brushsize/2)
 					If b>=0 And b<=mw And c>=0 And c<=mh
 					If protcol(map(cmx/tw+x,cmy/th+y)) = False
-					a = map(b,c)
-					map(cmx/tw+x,cmy/th+y) = a
+						a = map(b,c)
+						If shade = False
+							map(cmx/tw+x,cmy/th+y) = a
+						End If
+						If shade = True
+						If shademap(cmx/tw+x,cmy/th+y) = False
+							map(cmx/tw+x,cmy/th+y) = a
+						End If
+						End If
+						
 					End If
 					End If
 					End If
