@@ -759,7 +759,14 @@ End Function
 Function brushdown(cmx,cmy,ind)
 	If brushsize=1 Then 
 		If protcol(map(cmx/tw,cmy/th)) = False
-			map(cmx/tw,cmy/th) = ind
+			If shade = False
+				map(cmx/tw,cmy/th) = ind
+			End If
+			If shade = True
+				If shademap(cmx/tw,cmy/th) = False
+					map(cmx/tw,cmy/th) = ind
+				End If
+			End If
 		End If
 	End If
 	If brushsize>1 Then
