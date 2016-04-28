@@ -471,7 +471,8 @@ Function updateinterface()
 	Rect x1,y1+brushsize*th,2,2
 	Rect x1+brushsize*tw,y1,2,2
 	Rect x1+brushsize*tw,y1+brushsize*th,2,2
-
+	Color 255,255,255
+		
 ;
 	If normal = True
 		Text 10,480,"Brush normal on (n)"
