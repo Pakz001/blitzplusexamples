@@ -87,6 +87,7 @@ Global normal = True
 Global smudge = False
 Global smudgeint = 5 ; smudge intensity (higher = less)
 Global shade = False
+Global mirror = False
 
 Global linemode = False
 Global linedrawn = False
@@ -94,6 +95,11 @@ Global lsx1
 Global lsy1
 Global lsx2
 Global lsy2
+Global lsxm1
+Global lsym1
+Global lsxm2
+Global lsym2
+
 
 makemonkeycode
 makecolorcode
@@ -108,6 +114,10 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+		If EventData() = 23;i key mirror
+			If mirror = True Then mirror = False Else mirror = True
+			updateinterface
+		End If
 		If EventData()=200 ; cursor up ; color select
 			If brushindex>0 Then brushindex=brushindex-1
 			updateinterface
@@ -227,7 +237,19 @@ Repeat
 				If linemode = True
 					lsx2 = cmx
 					lsy2 = cmy
-					makeline
+					makeline(lsx1,lsy1,lsx2,lsy2)
+					If mirror = True
+						If lsx1<320
+							lsxm1 = (mw*tw)-lsx1
+							lsxm2 = (mw*tw)-lsx2
+						Else
+							lsxm1 = -lsx1+(mw*tw)
+							lsxm2 = -lsx2+(mw*tw)
+						EndIf
+						lsym1 = lsy1
+						lsym2 = lsy2
+						makeline(lsxm1,lsym1,lsxm2,lsym2)
+					End If
 					updateinterface
 					linedrawn=True
 				End If
@@ -250,6 +272,15 @@ Repeat
 				If linemode=False
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 					brushdown(cmx,cmy,brushindex)
+					If mirror = True
+						If cmx<320
+							x2 = 640-cmx						
+						Else
+							x2 = -cmx+640
+						EndIf
+						y2 = cmy
+						brushdown(x2,y2,brushindex)
+					End If					
 					updateinterface
 				End If
 				End If
@@ -283,9 +314,20 @@ Repeat
 					End If
 					updateinterface
 				End If					
+				If linemode = False
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 					brushdown(cmx,cmy,0)
+					If mirror = True
+						If cmx<320
+							x2 = 640-cmx						
+						Else
+							x2 = -cmx+640
+						EndIf
+						y2 = cmy
+						brushdown(x2,y2,0)
+					End If					
 					updateinterface
+				End If
 				End If
 			End If
 			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
@@ -303,15 +345,35 @@ Repeat
 			If linemode=False
 			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 				brushdown(cmx,cmy,brushindex)
+				If mirror = True
+					If cmx<320
+						x2 = 640-cmx						
+					Else
+						x2 = -cmx+640
+					EndIf
+					y2 = cmy
+					brushdown(x2,y2,brushindex)
+				End If				
 				updateinterface
-			End If
+			End If			
 			End If
 			End If
 			If MouseDown(2) = True
+			If linemode=False
 			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 				;map(cmx/tw,cmy/th) = 0
 				brushdown(cmx,cmy,0)
+				If mirror = True
+					If cmx<320
+						x2 = 640-cmx						
+					Else
+						x2 = -cmx+640
+					EndIf
+					y2 = cmy
+					brushdown(x2,y2,0)
+				End If
 				updateinterface
+			End If
 			End If
 			End If
 			updateinterface			
@@ -366,6 +428,16 @@ Function updateinterface()
 		DrawImage tileim,x*tw,y*th,map(x,y)
 	Next
 	Next
+	If mirror = True 
+		For y=0 To 480-16 Step 16
+			cx=((mw/2)*(tw))+tw/2
+			Color 255,255,255
+			Line cx,y,cx,y+8
+			Color 20,20,20
+			Line cx,y+8,cx,y+16
+		Next
+	End If
+		
 	For y=0 To 10 
 		DrawImage tileimbig,680,y*32,y
 		If brushindex = y
@@ -376,7 +448,7 @@ Function updateinterface()
 		If protcol(y) = True
 			Rect 714,y*32,12,30,True
 		End If		
-	Next
+	Next	
 	For y=0 To 47
 	For x=0 To 47
 		a = map(x,y)
@@ -391,7 +463,16 @@ Function updateinterface()
 	End If
 	; draw the brush view
 	Color 255,255,255
+	x1 = cmx-brushsize*tw/2
+	y1 = cmy-brushsize*th/2	
 	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
+	Color 20,20,20
+	Rect x1,y1,2,2
+	Rect x1,y1+brushsize*th,2,2
+	Rect x1+brushsize*tw,y1,2,2
+	Rect x1+brushsize*tw,y1+brushsize*th,2,2
+
+;
 	If normal = True
 		Text 10,480,"Brush normal on (n)"
 		Else
@@ -412,6 +493,12 @@ Function updateinterface()
 		Else
 		Text 180,510,"Shade mode off (h)"
 	End If
+	If mirror = True Then
+		Text 180,525,"Mirror mode on (i)"
+		Else
+		Text 180,525,"Mirror mode off (i)"
+	End If
+	
 	If explode = True
 		Text 380,480,"Brush Explode on (e)"
 		Else
@@ -429,7 +516,7 @@ Function updateinterface()
 	Text 380,525,"Color Sel. (Cur. Up/Down"
 	Text 580,480,"Flood fill (f)"
 	Text 580,495,"Undo (u)"
-	Text 10,525,"Press rmb on colors to change them."
+	Text 10,525,"color Set (rmb)"
 	Text 580,525,"Size :"+brushsize
 	Text 580,510,"brushsize (1/9)"
 	SetBuffer CanvasBuffer(can)
@@ -770,11 +857,15 @@ Function ffaddlist(x,y)
 	this\x = x
 	this\y = y
 End Function
-Function makeline()	
-	Local x1=lsx1/tw
-	Local y1=lsy1/th
-	Local x2=lsx2/tw
-	Local y2=lsy2/th
+Function makeline(x1,y1,x2,y2)	
+	x1=x1/tw
+	y1=y1/th
+	x2=x2/tw
+	y2=y2/th
+;	Local x1=lsx1/tw
+;	Local y1=lsy1/th
+;	Local x2=lsx2/tw
+;	Local y2=lsy2/th
     Local dx
 	Local dy
 	Local sx
