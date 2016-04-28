@@ -437,7 +437,7 @@ Function updateinterface()
 			Line cx,y+8,cx,y+16
 		Next
 	End If
-		
+	Color 255,255,255
 	For y=0 To 10 
 		DrawImage tileimbig,680,y*32,y
 		If brushindex = y
