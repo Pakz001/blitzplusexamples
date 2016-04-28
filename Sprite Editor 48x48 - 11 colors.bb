@@ -34,6 +34,9 @@ HideGadget(txt2)
 HideGadget(can)
 
 Dim cols(10,3)
+Dim colsf#(10,3) ; the float colors for
+				; brightness ect
+				
 ; This array contains the colors that are protected
 ; true/false
 Dim protcol(10)
@@ -94,6 +97,7 @@ makemonkeycode
 makecolorcode
 
 Global timer = CreateTimer(60)
+Local br#,bg#,bb# ; for the color manip
 
 updateinterface
 addundo
@@ -102,7 +106,33 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
-			If EventData()=35
+		If EventData()=59 ; f1 darken color
+			colsf(brushindex,1) = colsf(brushindex,1)/100*92
+			colsf(brushindex,2) = colsf(brushindex,3)/100*92
+			colsf(brushindex,3) = colsf(brushindex,2)/100*92
+			If colsf(brushindex,1) < 0 Then colsf(brushindex,1) = 0
+			If colsf(brushindex,2) < 0 Then colsf(brushindex,2) = 0
+			If colsf(brushindex,3) < 0 Then colsf(brushindex,3) = 0
+			cols(brushindex,0) = colsf(brushindex,0)
+			cols(brushindex,1) = colsf(brushindex,1)
+			cols(brushindex,2) = colsf(brushindex,2)
+			refreshtileimages
+			updateinterface
+		End If		
+		If EventData()=60 ; brighten
+			colsf(brushindex,1) = colsf(brushindex,1)/100*108
+			colsf(brushindex,2) = colsf(brushindex,3)/100*108
+			colsf(brushindex,3) = colsf(brushindex,2)/100*108
+			If colsf(brushindex,1) > 255 Then colsf(brushindex,1) = 255
+			If colsf(brushindex,2) > 255 Then colsf(brushindex,2) = 255
+			If colsf(brushindex,3) > 255 Then colsf(brushindex,3) = 255
+			cols(brushindex,0) = colsf(brushindex,0)
+			cols(brushindex,1) = colsf(brushindex,1)
+			cols(brushindex,2) = colsf(brushindex,2)						
+			refreshtileimages			
+			updateinterface			
+		End If		
+			If EventData()=35 ; h shading mode
 				If shade=True Then shade=False Else shade=True
 				updateinterface
 			End If
@@ -362,9 +392,9 @@ Function updateinterface()
 		Text 180,495,"Brush Smudge Off (m)"
 	End If
 	If shade = True Then
-		Text 180,515,"Shade mode on (h)"
+		Text 180,510,"Shade mode on (h)"
 		Else
-		Text 180,515,"Shade mode off (h)"
+		Text 180,510,"Shade mode off (h)"
 	End If
 	If explode = True
 		Text 380,480,"Brush Explode on (e)"
@@ -379,6 +409,7 @@ Function updateinterface()
 	
 	Text 10,510,"Outline at pos (o)"
 	Text 380,495,"Pick color (p)"
+	Text 379,510,"Darken/Brighten (F1-F2)"
 	Text 580,480,"Flood fill (f)"
 	Text 580,495,"Undo (u)"
 	Text 10,525,"Press rmb on colors to change them."
@@ -799,7 +830,6 @@ Function brushdown(cmx,cmy,ind)
 				If brushbuffer[cnt]>-1
 				If Rnd(smudgeint)<2
 				If protcol(map(cmx/tw+x,cmy/th+y)) = False
-
 					If shade=False
 						map(cmx/tw+x,cmy/th+y) = brushbuffer[cnt]
 					End If
