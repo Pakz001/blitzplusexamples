@@ -33,11 +33,11 @@ Repeat
 	If we=$102;keyup
 		If screen = "canvas"
 		If EventData()=200;up cursor (move color up)
-			If brushindex >-1 Then brushindex=brushindex-1
+			If brushindex >0 Then brushindex=brushindex-1
 			updateinterface
 		End If
 		If EventData()=208;down cursor (move color down - selecting)
-			If brushindex <11 Then brushindex=brushindex+1
+			If brushindex <10 Then brushindex=brushindex+1
 			updateinterface
 		End If
 
