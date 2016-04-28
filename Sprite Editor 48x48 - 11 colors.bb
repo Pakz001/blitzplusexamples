@@ -1,3 +1,4 @@
+.init
 ; main code ..............>>
 
 ; map width
@@ -21,6 +22,7 @@ End Type
 Type unre
 	Field map[48*48] ; sprite sheet width x height <<<<<<<<<
 	Field cols[12*3]
+	Field colsf#[12*3]
 End Type
 Global undoredo.unre = New unre
 
@@ -107,28 +109,30 @@ Repeat
 	If we=$102
 		If screen="canvas"
 		If EventData()=59 ; f1 darken color
+			colsf(brushindex,0) = colsf(brushindex,0)/100*92
 			colsf(brushindex,1) = colsf(brushindex,1)/100*92
-			colsf(brushindex,2) = colsf(brushindex,3)/100*92
-			colsf(brushindex,3) = colsf(brushindex,2)/100*92
+			colsf(brushindex,2) = colsf(brushindex,2)/100*92
+			If colsf(brushindex,0) < 0 Then colsf(brushindex,0) = 0
 			If colsf(brushindex,1) < 0 Then colsf(brushindex,1) = 0
 			If colsf(brushindex,2) < 0 Then colsf(brushindex,2) = 0
-			If colsf(brushindex,3) < 0 Then colsf(brushindex,3) = 0
 			cols(brushindex,0) = colsf(brushindex,0)
 			cols(brushindex,1) = colsf(brushindex,1)
 			cols(brushindex,2) = colsf(brushindex,2)
+			addundo
 			refreshtileimages
 			updateinterface
 		End If		
 		If EventData()=60 ; brighten
+			colsf(brushindex,0) = colsf(brushindex,0)/100*108
 			colsf(brushindex,1) = colsf(brushindex,1)/100*108
-			colsf(brushindex,2) = colsf(brushindex,3)/100*108
-			colsf(brushindex,3) = colsf(brushindex,2)/100*108
+			colsf(brushindex,2) = colsf(brushindex,2)/100*108
+			If colsf(brushindex,0) > 255 Then colsf(brushindex,0) = 255
 			If colsf(brushindex,1) > 255 Then colsf(brushindex,1) = 255
 			If colsf(brushindex,2) > 255 Then colsf(brushindex,2) = 255
-			If colsf(brushindex,3) > 255 Then colsf(brushindex,3) = 255
 			cols(brushindex,0) = colsf(brushindex,0)
 			cols(brushindex,1) = colsf(brushindex,1)
 			cols(brushindex,2) = colsf(brushindex,2)						
+			addundo
 			refreshtileimages			
 			updateinterface			
 		End If		
@@ -250,6 +254,10 @@ Repeat
 						cols(brushindex,0) = RequestedRed()
 						cols(brushindex,1) = RequestedGreen()
 						cols(brushindex,2) = RequestedBlue()
+						colsf(brushindex,0) = RequestedRed()
+						colsf(brushindex,1) = RequestedGreen()
+						colsf(brushindex,2) = RequestedBlue()
+
 						refreshtileimages
 						updateinterface
 						addundo
@@ -434,6 +442,7 @@ Function addundo()
 	cnt3=0
 	For i=0 To 11*3
 		undoredo\cols[cnt3] = cols(cnt1,cnt2)
+		undoredo\colsf[cnt3] = colsf(cnt1,cnt2)
 		cnt2=cnt2+1
 		If cnt2>3 Then cnt2 =0:cnt1=cnt1+1
 		cnt3=cnt3+1
@@ -468,6 +477,7 @@ Function undoback()
 	cnt3=0
 	For i=0 To 11*3
 		cols(cnt1,cnt2) = undoredo\cols[cnt3]
+		colsf(cnt1,cnt2) = undoredo\colsf[cnt3]		
 		cnt2=cnt2+1
 		If cnt2>3 Then cnt2 =0:cnt1=cnt1+1
 		cnt3=cnt3+1
