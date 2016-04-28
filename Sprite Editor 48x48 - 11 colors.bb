@@ -572,7 +572,10 @@ Function refreshtileimages(init=False)
 			Color 200+i*3,10+i*20,10
 			cols(i,0) = ColorRed()
 			cols(i,1) = ColorGreen()
-			cols(i,2) = ColorBlue()			
+			cols(i,2) = ColorBlue()	
+			colsf(i,0) = ColorRed()
+			colsf(i,1) = ColorGreen()
+			colsf(i,2) = ColorBlue()		
 		End If
 		Color cols(i,0),cols(i,1),cols(i,2)
 		Rect 0,0,tw,th,True
