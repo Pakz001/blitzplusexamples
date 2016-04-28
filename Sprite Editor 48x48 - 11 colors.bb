@@ -108,6 +108,14 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+		If EventData()=200 ; cursor up ; color select
+			If brushindex>0 Then brushindex=brushindex-1
+			updateinterface
+		End If
+		If EventData()=208;cursor down
+			If brushindex<10 Then brushindex=brushindex+1
+			updateinterface
+		End If
 		If EventData()=59 ; f1 darken color
 			colsf(brushindex,0) = colsf(brushindex,0)/100*92
 			colsf(brushindex,1) = colsf(brushindex,1)/100*92
@@ -417,7 +425,8 @@ Function updateinterface()
 	
 	Text 10,510,"Outline at pos (o)"
 	Text 380,495,"Pick color (p)"
-	Text 379,510,"Darken/Brighten (F1-F2)"
+	Text 380,510,"Darken/Brighten (F1-F2)"
+	Text 380,525,"Color Sel. (Cur. Up/Down"
 	Text 580,480,"Flood fill (f)"
 	Text 580,495,"Undo (u)"
 	Text 10,525,"Press rmb on colors to change them."
