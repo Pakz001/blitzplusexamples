@@ -36,9 +36,6 @@ Repeat
 			brushsize = EventData()-1
 			updateinterface
 		End If
-		If EventData()=18;e
-			If explode = True Then explode = False Else explode = True
-		End If
 		End If		
 	End If
 	If we=$201;mosuedown
@@ -134,9 +131,6 @@ Function updateinterface()
 	DrawImage canim,0,0
 	FlipCanvas can
 End Function
-
-
-
 Function refreshtileimages(init=False)
 	For i = 0 To 10
 		SetBuffer ImageBuffer(tileim,i)
@@ -161,7 +155,6 @@ Function refreshtileimages(init=False)
 		Text tw/2,th/2,i,1,1
 	Next
 End Function
-
 .brushfuncs
 Function brushdown(cmx,cmy,ind)
 	If brushsize=1 Then map(cmx/tw,cmy/th) = ind
