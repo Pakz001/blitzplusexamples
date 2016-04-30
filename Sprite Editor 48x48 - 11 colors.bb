@@ -1,3 +1,5 @@
+
+
 .init
 ; main code ..............>>
 
@@ -288,7 +290,7 @@ Repeat
 			End If
 			If EventData() = 2
 				If RectsOverlap(cmx,cmy,1,1,680,0,32,11*32)
-					If RequestColor()=True
+					If RequestColor(cols(brushindex,0),cols(brushindex,1),cols(brushindex,2))=True
 						brushindex=cmy/32
 						cols(brushindex,0) = RequestedRed()
 						cols(brushindex,1) = RequestedGreen()
