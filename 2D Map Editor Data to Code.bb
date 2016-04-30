@@ -30,6 +30,7 @@ For i=0 To 15
 Next
 
 Global screen$="txt"
+Global lastscreen$="txt"
 Global brushindex=1
 Global cmx
 Global cmy
@@ -143,7 +144,8 @@ Repeat
 				screen="txt2"
 			End If
 			If sg = 2
-				readmonkeycode
+				If screen="txt" Then readmonkeycode
+				If screen="txt2" Then readblitzcode
 				HideGadget txt
 				HideGadget txt2
 				ShowGadget can
@@ -230,7 +232,8 @@ Function readblitzcode()
 		stp=stp+1
 		cnt=cnt+1
 	Wend
-	If cnt <> ((mw)*(mh)) Then Notify "Not valid map data"
+;	DebugLog ((mw)*(mh))+"--"+cnt+"---"+mh
+	If cnt <> ((mw)*(mh))-(-1+mh) Then Notify "Not valid map data"
 	Local mytxt2$
 	Local a$=""
 	Local b$=""
@@ -240,6 +243,8 @@ Function readblitzcode()
 		If a$="," Then b$=b$+a$		
 		If Asc(a$) >= 48 And Asc(a$)<= 57 Then b$=b$+a$
 	Next
+
+	x=0
 	For i=1 To Len(b$)
 		a$=Mid(b$,i,1)
 		If Asc(a$)>=48 And Asc(a$)<=57 
@@ -249,7 +254,7 @@ Function readblitzcode()
 			map(x,y) = Int(c)
 			c$=""
 			x=x+1
-			If x>=mw Then x=0:y=y+1
+			If x>=mw-1 Then x=0:y=y+1
 		End If
 	Next
 End Function
