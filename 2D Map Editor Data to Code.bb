@@ -30,45 +30,14 @@ For i=0 To 15
 Next
 
 Global screen$="txt"
-Global brushindex=0
+Global brushindex=1
 Global cmx
 Global cmy
 
 Global tileim = CreateImage(32,32,16)
-SetBuffer ImageBuffer(tileim)
-For i = 0 To 15
-	SetBuffer ImageBuffer(tileim,i)
-	font=LoadFont ("verdana.ttf",16,1)
-	SetFont font
-	For y=0 To th
-		Color cols(i,0)/th*y,cols(i,1)/th*y,cols(i,2)/th*y
-		Line 0,y,tw,y
-	Next
-	Color cols(i,0),cols(i,1),cols(i,2)
-	Rect 0,0,tw,th,False
-	Color 0,0,0
-	Rect 0,0,14,14
-	Color 255,255,255
-	Text 4,4,i
-Next
-
 Global selectindexim = CreateImage(32,16*32)
-SetBuffer ImageBuffer(selectindexim)
-font = LoadFont("verdana.ttf",21,1)
-SetFont font
-For i = 0 To 16-1
-	For y=0 To 32
-		Color cols(i,0)/32*y,cols(i,1)/32*y,cols(i,2)/32*y
-		Line 0,y+i*32,32,y+i*32
-	Next	
-	Color cols(i,0),cols(i,1),cols(i,2)
-;	Rect 0,i*32,32,32,True
-	Color 0,0,0
-	Rect 0,i*32,14,14
-	Color 255,255,255
-	Text 4,i*32+4,i
 
-Next
+updategraphics
 
 
 
@@ -121,6 +90,18 @@ Repeat
 					brushindex=cmy/32
 					updateinterface
 				End If
+			End If
+			If EventData() = 2
+				If RectsOverlap(cmx,cmy,1,1,680,0,32,16*32)
+					brushindex=cmy/32
+					If RequestColor( cols(brushindex,0) , cols(brushindex,1) , cols(brushindex,2)) Then
+						cols(brushindex,0) = RequestedRed()
+						cols(brushindex,1) = RequestedGreen()
+						cols(brushindex,2) = RequestedBlue()					
+						updategraphics		
+					End If			
+					updateinterface
+				End If			
 			End If
 		End If
 	End If
@@ -194,12 +175,48 @@ Function updateinterface()
 	Rect 682,brushindex*32,29,29,False	
 	Text 5,480,"Mapw:"+mw+" maph:"+mh
 	Text 5,490,"Left mouse = put"
-	Text 5,500,"c to clear"
-	Text 5,510,"curs up/down brush index"
+	Text 5,500,"Right mouse = put 0"
+	Text 5,510,"c to clear"
+	Text 5,520,"curs up/down brush index"
 	SetBuffer CanvasBuffer(can)
 	Cls
 	DrawImage canim,0,0
 	FlipCanvas can
+End Function
+Function updategraphics()
+	; palette index choice
+	SetBuffer ImageBuffer(selectindexim)
+	font = LoadFont("verdana.ttf",21,1)
+	SetFont font
+	For i = 0 To 16-1
+		For y=0 To 32
+			Color cols(i,0)/32*y,cols(i,1)/32*y,cols(i,2)/32*y
+			Line 0,y+i*32,32,y+i*32
+		Next	
+		Color cols(i,0),cols(i,1),cols(i,2)
+	;	Rect 0,i*32,32,32,True
+		Color 0,0,0
+		Rect 0,i*32,14,14
+		Color 255,255,255
+		Text 4,i*32+4,i	
+	Next
+	; tiles on the map
+	SetBuffer ImageBuffer(tileim)
+	For i = 0 To 15
+		SetBuffer ImageBuffer(tileim,i)
+		font=LoadFont ("verdana.ttf",16,1)
+		SetFont font
+		For y=0 To th
+			Color cols(i,0)/th*y,cols(i,1)/th*y,cols(i,2)/th*y
+			Line 0,y,tw,y
+		Next
+		Color cols(i,0),cols(i,1),cols(i,2)
+		Rect 0,0,tw,th,False
+		Color 0,0,0
+		Rect 0,0,14,14
+		Color 255,255,255
+		Text 4,4,i
+	Next
 End Function
 .codeinputoutput
 Function readblitzcode()
