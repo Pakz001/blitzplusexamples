@@ -48,6 +48,9 @@ Dim protcol(10)
 
 Dim map(mw,mh)
 Global canim = CreateImage(800,600)
+SetBuffer ImageBuffer(canim)
+Global font=LoadFont("verdana.ttf",12)
+SetFont font 
 
 
 ; shade map part
@@ -116,6 +119,16 @@ Repeat
 	we = WaitEvent()
 	If we=$102
 		If screen="canvas"
+		If EventData()=46 ;c cls
+			For y=0 To mh
+			For x=0 To mw
+				map(x,y)=0
+			Next
+			Next
+			addundo
+			refreshtileimages(True)
+			updateinterface
+		End If
 		If EventData() = 23;i key mirror
 			If mirror = True Then mirror = False Else mirror = True
 			updateinterface
@@ -419,7 +432,7 @@ Repeat
 Forever 
 End
 
-.funcs
+.drawfuncs
 
 Function updateinterface()
 	SetBuffer ImageBuffer(canim)
@@ -487,19 +500,19 @@ Function updateinterface()
 		Text 180,480,"Brush Scatter off (s)"
 	End If
 	If smudge = True Then
-		Text 180,495,"Brush Smudge On (m)"
+		Text 180,490,"Brush Smudge On (m)"
 		Else
-		Text 180,495,"Brush Smudge Off (m)"
+		Text 180,490,"Brush Smudge Off (m)"
 	End If
 	If shade = True Then
-		Text 180,510,"Shade mode on (h)"
+		Text 180,500,"Shade mode on (h)"
 		Else
-		Text 180,510,"Shade mode off (h)"
+		Text 180,500,"Shade mode off (h)"
 	End If
 	If mirror = True Then
-		Text 180,525,"Mirror mode on (i)"
+		Text 180,510,"Mirror mode on (i)"
 		Else
-		Text 180,525,"Mirror mode off (i)"
+		Text 180,510,"Mirror mode off (i)"
 	End If
 	
 	If explode = True
@@ -508,20 +521,21 @@ Function updateinterface()
 		Text 380,480,"Brush Explode off (e)"		
 	End If
 	If linemode = True
-		Text 10,495,"Line Mode On (l)"
+		Text 10,490,"Line Mode On (l)"
 		Else
-		Text 10,495,"Line Mode Off (l)"	
+		Text 10,490,"Line Mode Off (l)"	
 	End If
 	
-	Text 10,510,"Outline at pos (o)"
-	Text 380,495,"Pick color (p)"
+	Text 10,500,"Outline at pos (o)"
+	Text 380,490,"Pick color (p)"
 	Text 380,510,"Darken/Brighten (F1-F2)"
-	Text 380,525,"Color Sel. (Cur. Up/Down"
+	Text 380,500,"Color Sel. (Cur. Up/Down"
 	Text 580,480,"Flood fill (f)"
-	Text 580,495,"Undo (u)"
-	Text 10,525,"color Set (rmb)"
-	Text 580,525,"Size :"+brushsize
-	Text 580,510,"brushsize (1/9)"
+	Text 580,490,"Undo (u)"
+	Text 10,510,"color Set (rmb)"
+	Text 10,520,"Cls (c)"
+	Text 580,510,"Size :"+brushsize
+	Text 580,500,"brushsize (1/9)"
 	SetBuffer CanvasBuffer(can)
 	Cls
 	DrawImage canim,0,0
