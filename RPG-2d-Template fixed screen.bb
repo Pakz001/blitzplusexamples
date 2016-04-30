@@ -2,10 +2,10 @@ AppTitle "Topdown RPG player map collision - cursor keys to move."
 Graphics 640,480,16,2
 SetBuffer BackBuffer()
 
-Global mw = 20
-Global mh = 15
-Global tw = 32
-Global th = 32
+Global mw = 30
+Global mh = 20
+Global tw = GraphicsWidth()/mw-1
+Global th = GraphicsHeight()/mh-1
 Global px = 0
 Global py = 0
 Global pw = tw
@@ -13,13 +13,17 @@ Global ph = th
 
 Dim map(mw,mh)
 
+Global mapim=CreateImage(GraphicsWidth(),GraphicsHeight())
+
 readlevel()
+drawlevel
 
 While KeyDown(1) = False
 	Cls
 	moveplayer
 	playeritemcollision
-	drawlevel
+;	drawlevel
+	DrawImage mapim,0,0
 	drawplayer
 	Flip
 Wend
@@ -89,6 +93,7 @@ Function playeritemcollision()
 			; We remove it from the map
 			;
 			map(x2,y2) = 0
+			updatelevel(x2,y2,0)
 		End If
 		End If
 		End If
@@ -103,7 +108,34 @@ Function drawplayer()
 	Oval px,py,pw,ph
 End Function
 
+Function updatelevel(x,y,ind)	
+	SetBuffer ImageBuffer(mapim)
+	If ind = 0
+		Color 0,0,0
+		Rect x*tw,y*th,tw,th
+	End If
+	If ind = 1
+		Color 255,255,255
+		Rect x*tw,y*th,tw,th,True
+	End If
+	If ind = 2
+		Color 0,255,0
+		x1=x*tw
+		y1=y*th
+		Line x1+tw/2,y1,x1+tw,y1+th
+	Line x1+tw,y1+th,x1,y1+th
+		Line x1,y1+th,x1+tw/2,y1
+	End If
+		If ind = 3
+		Color 200,180,10
+		Oval x*tw+4,y*th+4,tw-8,th-8
+	End If
+	SetBuffer BackBuffer()
+End Function
+
 Function drawlevel()
+	SetBuffer ImageBuffer(mapim)
+	Cls
 	For y=0 To mh-1
 	For x=0 To mw-1
 		If map(x,y) = 1
@@ -124,6 +156,7 @@ Function drawlevel()
 		End If
 	Next
 	Next
+	SetBuffer BackBuffer()
 End Function
 
 Function readlevel(level=1)
@@ -140,18 +173,23 @@ Function readlevel(level=1)
 End Function
 
 .level1
-Data 0,0,0,3,3,3,0,1,1,1,1,0,1,1,1,1,1,1,1,1
-Data 0,1,1,1,0,0,0,1,0,0,1,0,1,0,0,0,0,3,3,1
-Data 0,1,1,3,0,2,0,1,0,0,1,0,1,0,0,0,0,3,3,1
-Data 0,1,1,0,0,0,0,1,0,1,1,0,1,1,0,1,1,1,1,1
-Data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
-Data 0,1,0,0,1,0,0,0,0,0,2,0,0,0,0,0,0,1,0,0
-Data 0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1
-Data 0,1,0,3,1,0,0,2,0,0,0,0,0,0,1,0,0,0,0,0
-Data 0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
-Data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
-Data 0,0,1,1,1,1,1,1,1,1,0,0,2,0,1,0,0,0,0,0
-Data 0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0
-Data 0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0
-Data 0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,0,0,0,0,0
-Data 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Data 0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Data 0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+Data 1,0,0,0,0,0,0,1,0,0,1,3,3,1,0,0,0,0,0,0,0,0,0,0,0,1,3,3,0,0
+Data 1,0,0,0,0,1,1,1,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0
+Data 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,1,1,1,1,0,0,0,0
+Data 1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,2,2,2,2,0,0,0,0,0,1,0,0,0,0
+Data 1,1,1,1,0,0,2,2,0,0,1,0,0,0,0,2,2,2,2,2,0,0,0,0,0,1,0,0,0,0
+Data 3,3,0,1,0,0,0,0,0,0,1,1,1,1,2,2,2,2,2,2,2,1,1,0,0,1,0,0,0,0
+Data 3,3,0,1,0,0,0,0,0,0,1,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0
+Data 3,3,0,1,0,0,1,2,2,0,1,0,0,0,2,2,2,0,0,2,2,2,0,0,0,0,0,0,0,0
+Data 3,3,0,0,0,0,1,1,1,1,1,0,0,1,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0
+Data 0,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,0,0,1,0,0,2,2,2,2,2,0,0,0,0
+Data 0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0
+Data 3,3,0,1,0,0,1,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,1,1,1,1,1,0,0
+Data 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,3,3,1,1,1,1,1,1,1,1,1,1,0,0
+Data 1,1,1,1,1,1,1,0,0,0,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0
+Data 1,1,1,1,0,0,0,0,2,2,2,2,2,2,0,0,0,0,0,0,0,0,1,1,1,1,1,1,3,0
+Data 1,1,1,1,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,1,1,1,1,1,1,3,0
+Data 0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,1,1,1,1,1,1,0,0
+Data 0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0
