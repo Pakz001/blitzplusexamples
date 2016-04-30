@@ -1,5 +1,4 @@
 
-
 .init
 ; main code ..............>>
 
@@ -531,6 +530,9 @@ Function updateinterface()
 	Text 380,510,"Darken/Brighten (F1-F2)"
 	Text 380,500,"Color Sel. (Cur. Up/Down"
 	Text 580,480,"Flood fill (f)"
+	If RectsOverlap(0,0,mw*tw,mh*th,cmx,cmy,1,1)=True
+	Text 690,480,"X:"+ cmx/tw + " Y:"+cmy/th
+	EndIf
 	Text 580,490,"Undo (u)"
 	Text 10,510,"color Set (rmb)"
 	Text 10,520,"Cls (c)"
