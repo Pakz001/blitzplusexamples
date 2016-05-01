@@ -53,7 +53,6 @@ Dim mapimage(5)
 For i=0 To 5
 	mapimage(i) = CreateImage(mw*tw,mh*th)
 Next
-
 Text 0,0,"Please wait"
 Flip
 
