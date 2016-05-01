@@ -129,12 +129,20 @@ Function updateinterface()
 	Next
 	Next
 
+	Color 200,200,200
+
 	For x=0 To 16
-		DrawImage iconimage,x*33,480,x
+		DrawImage iconimage,x*36,500,x
+		Rect x*36-2,500-2,36,36,False
 	Next
+	
+	
 	; draw the brush view
 	Color 255,255,255
-	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False	
+	Color 255,255,255
+	Rect cmx-brushsize*tw/2,cmy-brushsize*th/2,brushsize*tw,brushsize*th,False
+
+	Rect x,y,w,h,False
 	Text 10,540,"Brush size :"+brushsize+" (press 1 to 9)
 	
 	SetBuffer CanvasBuffer(can)
