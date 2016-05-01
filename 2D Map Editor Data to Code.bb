@@ -12,10 +12,10 @@ Global txt2 = CreateTextArea(0,20,800,600,win)
 Global tab = CreateTabber(0,0,800,20,win)
 Global can = CreateCanvas(0,20,800,600,win)
 HideGadget txt2
-Global mw = 30
-Global mh = 20
-Global tw = 22
-Global th = 22
+Global mw = 40
+Global mh = 30
+Global tw = 15
+Global th = 15
 Dim map(mw,mh)
 Global canim = CreateImage(800,600)
 SetBuffer ImageBuffer(canim)
@@ -238,12 +238,15 @@ Function readblitzcode()
 	Local a$=""
 	Local b$=""
 	Local c$=""
-	For i = 1 To Len(mytxt$)
+	s = Instr(Lower(mytxt),"data")
+	s=s+4
+	For i = s To Len(mytxt$)
 		a$=Mid(mytxt$,i,1)
-		If a$="," Then b$=b$+a$		
+		If a$="," Then b$=b$+a$	
+		If a$=Chr(10) Then b$=b$+","
 		If Asc(a$) >= 48 And Asc(a$)<= 57 Then b$=b$+a$
 	Next
-
+	b$=b$+","
 	x=0
 	For i=1 To Len(b$)
 		a$=Mid(b$,i,1)
@@ -251,10 +254,10 @@ Function readblitzcode()
 			c$=c$+a$
 		End If
 		If a$="," Then
-			map(x,y) = Int(c)
+			map(x,y) = Int(c)			
 			c$=""
 			x=x+1
-			If x>=mw-1 Then x=0:y=y+1
+			If x>=mw Then x=0:y=y+1
 		End If
 	Next
 End Function
