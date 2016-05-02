@@ -1,4 +1,3 @@
-
 .init
 ; main code ..............>>
 
@@ -92,6 +91,8 @@ Global smudge = False
 Global smudgeint = 5 ; smudge intensity (higher = less)
 Global shade = False
 Global mirror = False
+Global pickcolor = False
+Global ctrldown = False
 
 Global linemode = False
 Global linedrawn = False
@@ -116,8 +117,20 @@ addundo
 .main
 Repeat 
 	we = WaitEvent()
-	If we=$102
+	If we=$101 ; keydown
+		If EventData()=29 ; left ctrl key
+			pickcolor = True 
+			ctrldown = True
+			updateinterface
+		End If		
+	End If
+	If we=$102;keyup
 		If screen="canvas"
+		If EventData()=29 ; ctrl key - pick color
+			pickcolor = False
+			ctrldown = False
+			updateinterface
+		End If		
 		If EventData()=46 ;c cls
 			For y=0 To mh
 			For x=0 To mw
@@ -237,15 +250,26 @@ Repeat
 	End If
 	If we=$201;mosuedown
 		If screen = "canvas"
+		If ctrldown=False
 		If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 			lsx1 = cmx
 			lsy1 = cmy
 			linedrawn=False
 		End If
 		End If
+		End If
 	End If
 	If we=$202;mouseup
 		If EventSource() = can
+			If ctrldown=True
+				If EventData()=1
+					If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
+						brushindex = map(cmx/tw,cmy/th)
+						updateinterface
+					End If				
+				End If
+			End If
+			If ctrldown=False
 			If EventData() = 1
 				If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 				If linemode = True
@@ -347,6 +371,7 @@ Repeat
 			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
 				addundo
 			End If			
+			End If
 		End If
 	End If
 	If we=$203;mousemove
@@ -354,7 +379,8 @@ Repeat
 			lcmx = cmx
 			lcmy = cmy
 			cmx = EventX()
-			cmy = EventY()			
+			cmy = EventY()	
+			If ctrldown=False		
 			If MouseDown(1) = True
 			If linemode=False
 			If RectsOverlap(cmx,cmy,1,1,0,0,(mw+1)*tw,(mh+1)*th)
@@ -387,6 +413,7 @@ Repeat
 					brushdown(x2,y2,0)
 				End If
 				updateinterface
+			End If
 			End If
 			End If
 			End If
@@ -531,8 +558,11 @@ Function updateinterface()
 	Text 380,500,"Color Sel. (Cur. Up/Down"
 	Text 580,480,"Flood fill (f)"
 	If RectsOverlap(0,0,mw*tw,mh*th,cmx,cmy,1,1)=True
-	Text 690,480,"X:"+ cmx/tw + " Y:"+cmy/th
+		Text 690,480,"X:"+ cmx/tw + " Y:"+cmy/th
 	EndIf
+	If pickcolor=True
+		Text 690,490,"Pick color"
+	End If
 	Text 580,490,"Undo (u)"
 	Text 10,510,"color Set (rmb)"
 	Text 10,520,"Cls (c)"
