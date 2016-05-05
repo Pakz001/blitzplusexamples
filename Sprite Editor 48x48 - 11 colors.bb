@@ -490,8 +490,8 @@ Function updateinterface()
 			Rect 714,y*32,12,30,True
 		End If		
 	Next	
-	For y=0 To 47
-	For x=0 To 47
+	For y=0 To mh-1
+	For x=0 To mw-1
 		a = map(x,y)
 		Color cols(a,0),cols(a,1),cols(a,2)
 		Rect x*2+660,y*2+370,2,2
@@ -578,8 +578,8 @@ End Function
 Function addundo()
 	undoredo.unre = New unre
 	cnt=0
-	For y=0 To 47
-	For x=0 To 47
+	For y=0 To mh-1
+	For x=0 To mw-1
 		undoredo\map[cnt] = map(x,y)
 		cnt=cnt+1
 	Next
