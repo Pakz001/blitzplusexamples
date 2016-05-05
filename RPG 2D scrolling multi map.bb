@@ -2,6 +2,9 @@ AppTitle "RPG 2D scrolling multi map - cursor keys to move."
 Graphics 640,480,16,2
 SetBuffer BackBuffer()
 
+Global editmode = False
+Global edittile 
+
 Global keys = 0
 Global gold = 0
 
@@ -15,8 +18,8 @@ Global numlevels = 5
 
 Dim map(numlevels,mw,mh)
 ; player variables
-Global pw = tw
-Global ph = th
+Global pw = (tw-5)
+Global ph = (th-5)
 Global px = GraphicsWidth()/2-tw/2
 Global py = GraphicsHeight()/2-th/2
 ; scrolling variables
@@ -59,24 +62,80 @@ Flip
 readlevels()
 makemaps()
 
-
+.mainloop
 While KeyDown(1) = False
 	Cls	
-	For i=0 To 4 ;speed of movement
-		moveplayer
-		playeritemcollision
-		centermap
-		switchmap()
-	Next
-	DrawBlock mapimage(ml(mcx,mcy)),msx,msy
-	drawplayer	
-	Color 255,255,255
-	Text 0,0,"Use cursors to move around"
-	Text 0,15,"cursor : " + mcx +","+mcy+" on map : "+ml(mcx,mcy)
-	Text 320,0,"gold:"+gold+" keys:"+keys
+	If KeyHit(18);key e
+		If editmode=True Then editmode = False Else editmode = True
+	EndIf
+	edit
+	If editmode = False
+		For i=0 To 4 ;speed of movement
+			moveplayer
+			playeritemcollision
+			centermap
+			switchmap()
+		Next
+		DrawBlock mapimage(ml(mcx,mcy)),msx,msy
+		drawplayer	
+		Color 255,255,255
+		Text 0,0,"Use cursors to move around"
+		Text 0,15,"cursor : " + mcx +","+mcy+" on map : "+ml(mcx,mcy)
+		Text 320,0,"gold:"+gold+" keys:"+keys
+		Text 320,15,"Press e for edit mode"
+	End If
 	Flip
 Wend
 End
+
+
+Function edit()
+	If editmode = True
+		DrawBlock mapimage(ml(mcx,mcy)),msx,msy
+		Color 20,20,20		
+		Rect 0,0,GraphicsWidth(),36,True
+		For x=0 To 10
+			drawtile(x,0,x)
+			If edittile = x
+				Color 255,0,0
+				Rect x*tw,y*th,32,32,False
+			End If
+			If RectsOverlap(MouseX(),MouseY(),1,1,x*tw,0,32,32)
+				Color 255,255,255
+				Rect x*tw,0,32,32,False
+				Color 0,0,0
+				Rect x*tw+1,1,30,30,False
+				If MouseDown(1) = True
+					edittile = x
+				End If
+			End If
+		Next
+		If RectsOverlap(MouseX(),MouseY(),1,1,0,32,GraphicsWidth(),GraphicsHeight()-32)
+			x1 = (MouseX()-msx)/tw
+			y1 = (MouseY()-msy)/th
+			If MouseDown(1) = True
+				map(ml(mcx,mcy),x1,y1)=edittile
+				updatemap x1,y1,edittile
+			End If
+			Color 255,255,255
+			Rect x1*tw,y1*th,32,32,False
+			Color 0,0,0
+			Rect x1*tw+1,y1*th+1,30,30,False
+		End If
+		If KeyDown(205) ; right
+			msx=msx-3
+		EndIf
+		If KeyDown(203);left		
+			msx=msx+3
+		End If
+		If KeyDown(200);up
+			msy=msy+3
+		End If
+		If KeyDown(208);down
+			msy=msy-3
+		End If
+	End If
+End Function
 
 ; here we check if the player is
 ; at a border and if he can go to another map
@@ -247,7 +306,7 @@ End Function
 
 Function updatemap(x,y,t)
 	SetBuffer ImageBuffer(mapimage(ml(mcx,mcy)))
-	drawtile(x,y,0)
+	drawtile(x,y,t)
 	SetBuffer BackBuffer()
 End Function
 
@@ -262,7 +321,7 @@ Function makemaps()
 	For y=0 To mh-1
 	For x=0 To mw-1
 		a = map(i,x,y)
-		If a > 0 Then drawtile(x,y,a)
+		drawtile(x,y,a)
 	Next
 	Next
 	Next
@@ -285,7 +344,7 @@ Function drawtile(x,y,t)
 			x1=x*tw
 			y1=y*th
 			Line x1+tw/2,y1,x1+tw,y1+th
-			Line x1+tw,y1+th,x1,y1+th
+			Line x1+tw,y1+th-1,x1,y1+th-1
 			Line x1,y1+th,x1+tw/2,y1
 		Case 7 ; door
 			Color 150,150,150
