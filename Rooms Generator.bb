@@ -3,10 +3,14 @@ SetBuffer BackBuffer()
 
 AppTitle "Map generator"
 
+; mapwidthheight
 Global mw=100
 Global mh=100
+;tilewidthheight
 Global tw=5
 Global th=5
+;maxroomsizewh
+Global maxroomsize = 25
 
 Dim map(mw,mh)
 
@@ -14,7 +18,7 @@ SeedRnd MilliSecs()
 
 makemap
 
-Global timer=CreateTimer(5)
+Global timer=CreateTimer(10)
 
 While KeyDown(1) = False
 	WaitTimer timer
@@ -41,32 +45,26 @@ Function makemap()
 	map(mw/2,mh/2) = 3
 	Local total=Rand(20000,50000)
 	For i=0 To total
-		x = Rand(20,mw-20)
-		y = Rand(20,mh-20)
+		x = Rand(maxroomsize,mw-maxroomsize)
+		y = Rand(maxroomsize,mh-maxroomsize)
 		If map(x,y) = 3
 			a = Rand(0,4)
+			w=Rand(7,maxroomsize)
+			h=Rand(7,maxroomsize)
 			Select a
 				Case 0;nroom
-				w=Rand(7,15)
-				h=Rand(7,15)
 				If fits(x-w/2,y-h,w,h-1) = True
 					mr(x,y-h,x+w/2,y-h/2,x,y,x-w/2,y-h/2)
 				EndIf
 				Case 1;eroom
-				w=Rand(7,15)
-				h=Rand(7,15)
 				If fits(x+1,y-h/2,w,h) = True
 					mr(x+w/2,y-h/2,x+w,y,x+w/2,y+h/2,x,y)
 				EndIf
 				Case 2;sroom
-				w=Rand(7,15)
-				h=Rand(7,15)
 				If fits(x-w/2,y+1,w,h) = True
 					mr(x,y,x+w/2,y+h/2,x,y+h,x-w/2,y+h/2)
 				EndIf
 				Case 3;wroom
-				w=Rand(7,15)
-				h=Rand(7,15)
 				If fits(x-w-1,y-h/2,w,h) = True
 					mr(x-w/2,y-h/2,x,y,x-w/2,y+h/2,x-w,y)
 				EndIf
@@ -122,9 +120,7 @@ End Function
 ; Is there anything in the map
 Function fits(x,y,w,h)
 	; if outside
-	If RectsOverlap(x,y,w,h,0,0,mw,mh) = False
-		Return False
-	End If
+	If x<0 Or y<0 Or x+w>mw Or y+h>mh Then Return False	
 	; if inside
 	For y1=y To y+h
 	For x1=x To x+w
