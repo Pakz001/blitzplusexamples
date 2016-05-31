@@ -7,10 +7,11 @@ AppTitle "Map generator"
 Global mw=100
 Global mh=100
 ;tilewidthheight
-Global tw=5
-Global th=5
-;maxroomsizewh
-Global maxroomsize = 25
+Global tw=GraphicsWidth()/mw
+Global th=GraphicsHeight()/mh
+;min/maxroomsizewh
+Global minroomsize = 5
+Global maxroomsize = 15
 
 Dim map(mw,mh)
 
@@ -43,14 +44,14 @@ End Function
 
 Function makemap()
 	map(mw/2,mh/2) = 3
-	Local total=Rand(20000,50000)
+	Local total=Rand(20000,150000)
 	For i=0 To total
 		x = Rand(maxroomsize,mw-maxroomsize)
 		y = Rand(maxroomsize,mh-maxroomsize)
 		If map(x,y) = 3
 			a = Rand(0,4)
-			w=Rand(7,maxroomsize)
-			h=Rand(7,maxroomsize)
+			w=Rand(minroomsize,maxroomsize)
+			h=Rand(minroomsize,maxroomsize)
 			Select a
 				Case 0;nroom
 				If fits(x-w/2,y-h,w,h-1) = True
