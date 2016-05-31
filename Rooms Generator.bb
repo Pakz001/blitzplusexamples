@@ -1,4 +1,4 @@
-Graphics 800,600,16,2
+Graphics 800,600,32,2
 SetBuffer BackBuffer()
 
 AppTitle "Map generator"
@@ -46,8 +46,8 @@ Function makemap()
 	map(mw/2,mh/2) = 3
 	Local total=Rand(20000,150000)
 	For i=0 To total
-		x = Rand(maxroomsize,mw-maxroomsize)
-		y = Rand(maxroomsize,mh-maxroomsize)
+		x = Rand(maxroomsize+2,mw-(maxroomsize+2))
+		y = Rand(maxroomsize+2,mh-(maxroomsize+2))
 		If map(x,y) = 3
 			a = Rand(0,4)
 			w=Rand(minroomsize,maxroomsize)
