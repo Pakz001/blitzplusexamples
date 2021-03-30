@@ -1,0 +1,37 @@
+;
+;
+; Contains the settings for the game.
+;
+;
+; [Setup] General game tweaks
+; [Controls] Input settings for the game
+;
+; mousebuttons 1 = left, 2 = right, 3 = middle
+;
+
+
+[setup]
+set_graphicsdepth		= 32			; 8/16/32
+set_intromessage		= true
+set_introaboutmessage		= true
+set_tutorialrequest		= true
+set_quitrequest			= true
+set_showtitlescreen		= true
+
+[interface]
+set_tooltipdelay		= 2500
+
+[sound]
+set_musicenabled		= true
+set_sfxenabled			= true
+
+[controls]
+;
+; Scroll the map with the mouse by pressing on it
+set_mousescrolling		= true
+set_mousescrollingbutton	= 3
+;
+; Scroll the map by moving the mouse to the edges
+;
+set_autoscrollingfullscreen	= true
+set_autoscrollingwindowed	= false

@@ -1,0 +1,123 @@
+@1
+Welcome to my Civ style game.
+
+Check out the other screnario's.
+
+movement keys are Home/End/PageUp/PageDown
+or keypad and the Cursors
+
+Mail your ideas and suggestions to 
+nebula_rve@hotmail.com.
+
+Press F1 for the help screen
+
+Development info :
+
+The game is being programmed in Blitz Basic.
+www.blitzbasic.com
+
+
+@2
+Game keys
+
+** New
+
+- Middle Mouse Button and press on the screen
+ to scroll the map.
+
+- Right CTRL + Cursors also scrolls the map
+
+- I have added a bat file to the map and this
+runs the game in fullscreen mode.
+
+
+
+F1 - game keyshortcuts
+
+ctrl + s - save game (Does not save AI status)
+ctrl + l - load game
+escape - end game
+
+i - screnario info screen
+n - find next unit to move
+
+f12 - Let the ai General command your troops
+      * hold rmb for fast forward
+      * hold lmb to stop the general
+        from commanding troops
+      * (quick hack feature)
+
+****** Editor
+
+e - edit mode
+
+  in edit mode :
+
+  ctrl + delete - Delete tile
+  ctrl + 1 to 0 - change surface
+  ctrl + r - place road
+  ctrl + f - place fortress
+  ctrl + c - create city
+  ctrl + shift + w - create water
+
+unit commands : 
+cursor left or keypad 4 - move unit left
+cursor right or keypad 6 - move unit right
+cursor down or keypad 2 - move unit down
+cursor up or keypad 8- move unit up
+home or heypad 7 - move unit left and up 
+pageup or keypad 9 - move unit right and up
+end or keypad 1 - move unit left and down
+page down or keypad 3 - move unit right and down
+
+shft + delete - disband unit
+c - center to active unit
+r - build road (settler unit)
+f - fortify
+space - skip turn
+s - sentry
+w - wait
+m - build mine
+g - goto location (use mouse to
+    select destination - escape = cancel)
+
+In the cityscreen
+
+Press the right mouse buttons on the units to 
+activate multiple
+units.
+
+@3
+Welcome to my turn based game.
+
+Press F1 in the game at any time for the key
+shortcuts.
+
+
+This game is still very much under development.
+
+Programming by R.v.Etten | Nebula
+Graphics by Timo Vihola
+Sounds by various
+Music by Amiga - some versions not enabled
+
+
+Latest additions/bugfixes
+
+version 1.29
+- Fixed a bug with the goto feature where you could not
+move to positions that held your units.
+- Tweaked the ai-general so he would use all active forces
+until they have no turns left.
+- Hopefully fixed a bug where units without moves would 
+be shown flickering after the ai general was finished.
+- Right mouse button can now also be used to speed up the 
+enemy play and player/enemy battles. 
+
+
+
+
+
+
+
+@End

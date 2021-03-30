@@ -1,0 +1,41 @@
+@1
+Welcome to Kings and Knights
+
+
+http://nebula.woppy.net is the
+current project homepage.
+
+Capture enemy cities and defend
+your own. You are at default the
+red player.
+
+Development info :
+
+The game is being programmed in Blitz Basic.
+www.blitzbasic.com
+
+Edit the settings.txt to configure the game
+
+Press the function keys for more screens
+
+
+Editing :
+
+You can create screnario's. You can do this by
+activating the editmode. Once you have done this
+you can create units and alter the landscape. 
+You can alter the landscape by using the 
+keycombination CTRL+1,2,3 ect.. 
+The editor section of this game is still under
+construction.
+
+
+Loading / Saving :
+
+You can load levels by selecting the load button
+in the options menu. You can save a level by 
+selecting the save button in the same menu. 
+
+
+
+@End
