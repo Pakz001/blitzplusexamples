@@ -1,0 +1,99 @@
+;
+; Alignment of the 8 players.
+;
+; Default settings
+;
+;
+; Explanation
+;
+; 
+;@Tribes		< Needs to be present as the first
+;			< command in the config file.
+;@player1 		< name needs to be like this. Either 1 to 8
+;Name_Of_Player 	< name needs to be directly underneath
+;			< the player id header.
+;@description		< header for description.
+;...			< Up to 10 lines
+;@end description	< Needs to be underneath a description
+;			< Header.
+;@End			< Needed to see the end of the
+;			< Config. Required at the end
+;			< of the file.
+;
+; Required header for this config file
+;
+@tribes
+;
+;
+@player1
+Franks
+
+@Description
+The Franks are a germanic tribe. Historically Located
+in France. Their most direct ascendants are the Dutch and
+Belgians.
+@End Description
+
+@player2
+Holy Roman
+
+@Description
+The holy Romans are a germanic tribe. Historically located
+in Germany and Itally.
+@End Description
+
+@player3
+Visigoths
+
+@Description
+The Visogoths are a Germanic tribe, they originally lived around
+the lower Danube and the Black sea. The moved to/invaded France
+and Spain after the Huns invaded their homelands.
+@End Description
+
+@player4
+Vandals
+
+@Description
+A Germanic tribe. Originally living near the Lower Danue and
+Black sea. After their homeland was invaded by the huns they
+Re-located to Northern Afrika.
+@End Description
+
+@player5
+Angles
+
+@Description
+A Germanic Tribe. Originally living near the Lower Danue and
+Black sea. They moved to/invaded Brittain after the Hun
+invasion.
+@End Description
+
+@player6
+Magyars
+
+@Description
+The Magyars originated from the East. They settled in Russia.
+@End Description
+
+@player7
+Saxons
+
+@Description
+The Saxons, a germanic tribe. Originally living near the
+Lower Danue and Black sea. They settled Brittain after
+the Hun Invasion.
+@End Description
+
+@player8
+Teutons
+
+@Description
+The teutons, A Germanic tribe lived in Scandinavia. They
+started migrating into South and Central Europe.
+@End Description
+
+@end
+
+
+

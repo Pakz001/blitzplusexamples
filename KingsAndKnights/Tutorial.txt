@@ -1,0 +1,204 @@
+@1
+Hint
+
+Hold the right mouse button down
+to speed up the computers moves.
+
+
+@2
+Hint
+
+Unit Goto option 'g'
+
+When a unit is selected press
+'g' to move it. You can only
+move it to a area connected by
+a road.
+
+@3
+Hint
+
+Zone of Control
+
+Enemy units control the direct area 
+around them. You can move into this
+area but you can not move thru it.
+
+@4
+Hint
+
+You can press 'i' for a overview
+of the game. 
+
+Here information is displayed
+of each player in the game.
+
+
+@5
+Disband
+
+When a unit has become useless
+then you can disband him with
+the disband button.
+
+Shortcut : d
+
+@6
+Wait
+
+Wait with giving this unit a
+order until other units have
+been given orders.
+
+Shortcut = w
+
+@7
+Pillage
+
+Destroys a city/road or fortress.
+
+Currently cities cannot be build
+so be carefull not to destroy
+your own cities.
+
+Shortcut = p
+
+
+@8
+Fortify
+
+When a unit is fortified he will
+have more chance of surviving
+a attack.
+
+When fortified in a city or
+fortress the chance of a 
+victorious outcome is even 
+greater.
+
+Shortcut = f
+
+@9
+Roads
+
+Units move faster on roads.
+
+Use builders to build roads by
+pressing 'b' or use the button
+in the right game bar in the
+main screen.
+
+@10
+Cities 
+
+In Kings and Knights the goal is
+to capture all the enemy cities.
+
+You can enter a city by pressing
+the right mouse button on it.
+
+Cities need to have a defensive
+force inside them or they will
+be captured when a enemy attacks
+it.
+
+@11
+Units
+
+Units are for fighting and 
+defending your empire.
+There are several units in the
+game. You can give them orders by 
+pressing the buttons on the right
+task bar.
+
+When they are active they flicker.
+Then you can move them with the 
+keypad or cursors.
+
+Hint : 
+When no unit appears to be
+selected press 'c' to center
+back on the active unit. Press
+'n' to select the next unit.
+
+
+@12
+Main Screen
+
+You are the red player. A blinking
+unit is the current active one.
+At any time you can enter your
+cities and manage it.
+
+It is your mission to defend your
+cities and defeat the players
+your are at war with.
+
+What do I see? :
+At your top right you can see
+the total map displayed. Click
+on it to see it's description.
+
+To bottom of the minimap you can
+see the game bar. It displays
+usefull information and contains
+several shortcuts.
+
+The main part of the screen is the
+main game view. Here you control
+your empire.
+
+
+@13
+This is the minimap. It displays
+the total game map.
+
+The white speckles are units
+where the colored dots are 
+cities.
+
+You can press the left mouse
+button on the map and the 
+display will go there.
+
+When fog of war is enabled you
+will only see the area you have 
+been.
+
+@14
+Fog of War
+
+A fog of war is present in the
+game. It has not been enabled
+but this can be done from the
+options menu. Select map options
+and change the fog of war setting.
+
+@15
+City Queue
+
+Using the city queue all units 
+that you select will be build.
+If a city is large it will be
+able to build more units per
+turn.
+
+When a units is created it is
+deducted from your treasury.
+
+@16
+City Baracks
+
+A city needs protection. Always
+try to keey a number of units
+in a city. If a city goes
+undefended it could be taken
+with great ease.
+
+Select a unit to activate and
+the city screen will auto close
+and bring you back to the main map.
+
+
+@End

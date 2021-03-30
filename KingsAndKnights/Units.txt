@@ -1,0 +1,82 @@
+;
+; Units Configuration file
+;
+;
+;
+
+@Units
+
+;
+;	Name = Graphics file name in graphics/ folder (Must end with bmp ext)
+;	Terrain Type = Land,Sea,Air(not implemented)
+;
+
+@Unit_Setup
+;
+; Name 		- 	Name of the graphic file [currently only for .bmp files -Note - Update]
+;			[transparent color = 135,83,135]
+; Terrain Type	-	Can travel on either [land, sea or air(not implemented)]
+; Gamename	-	Name of the unit in the game.
+; Carries	-	Can carry a x amount of units.
+; Caryable	-	Can this unit be carried.
+; Attack	-	Attack points of the unit.
+; Defense	-	Defense points of the unit.
+; Movement	-	Can move x unmodified squares per turn
+; Hitpoints	-	Health of the overal unit. (Not implemented)
+; 
+;Name	,Terrain Type	,Gamename		,Carries	,Caryable	,Attack	,Defense	,Moves	,Hitpoints
+
+Unit01	,land		,Workforce		,none		,yes		,1	,1		,1	,100
+Unit02	,land		,Peasants		,none		,yes		,1	,1		,1	,100
+Unit03	,land		,Soldiers		,none		,yes		,3	,2		,1	,100
+Unit04	,land		,Spearmen		,none		,yes		,4	,8		,1	,100
+Unit05	,land		,Axemen			,none		,yes		,6	,3		,1	,100
+Unit06	,land		,Archers		,none		,yes		,6	,2		,1	,100
+Unit07	,land		,Mounted Soldiers	,none		,yes		,6	,3		,2	,100
+Unit08	,land		,Knights		,none		,yes		,11	,7		,3	,100
+Unit09	,land		,Ballista's		,none		,yes		,12	,2		,2	,100
+Unit10	,land		,Catapults		,none		,yes		,16	,2		,1	,100
+Unit11	,land		,Siege Towers		,none		,yes		,20	,2		,1	,100
+Unit12	,land		,Wolfs			,none		,no		,2	,2		,2	,100
+Unit13	,land		,Bears			,none		,yes		,4	,3		,1	,100
+Unit14	,land		,Carts			,none		,yes		,1	,1		,1	,100
+Unit15	,sea		,Sail			,1		,no		,2	,1		,4	,100
+Unit16	,sea		,Medium Ship		,2		,no		,3	,2		,3	,100
+Unit17	,sea		,Cargo Ship		,3		,no		,3	,2		,2	,100
+
+@Unit_Build_Requirements
+;
+; Each unit will require a certain amount of goods/money to be able to be build.
+; There can be a number of them. The requirement must be a item that is in the economy.txt or gold
+;
+; Name/ID - Name of the graphic file or identical name of the unit 
+; Amount - The amount of a certain good
+; Requirment - The required item for the production of the unit.
+; [ Usage - Amount >> Item, Amount >> Item ]
+;
+;Name/Id	;Amount	,Requirement	;Optional 1		,ect...
+
+Unit01		,35	,Gold		,0	,none
+Unit02		,15	,Gold		,0	,none
+Unit03		,35	,Gold		,0	,none
+Unit04		,40	,Gold		,0	,none
+Unit05		,40	,Gold		,0	,none
+Unit06		,55	,Gold		,0	,none
+Unit07		,65	,Gold		,0	,none
+Unit08		,100	,Gold		,0	,none
+Unit09		,80	,Gold		,0	,none
+Unit10		,80	,Gold		,0	,none
+Unit11		,110	,Gold		,0	,none
+Unit12		,35	,Gold		,0	,none
+Unit13		,40	,Gold		,0	,none
+Unit14		,20	,Gold		,0	,none
+Unit15		,20	,Gold		,0	,none
+Unit16		,40	,Gold		,0	,none
+Unit17		,35	,Gold		,0	,none
+
+
+
+
+
+
+@End
