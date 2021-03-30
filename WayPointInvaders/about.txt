@@ -1,0 +1,88 @@
+Waypoint invaders 1.0 Freeware! (c) Nebula / R.v.Etten in 2004
+
+- Use the left mouse to fire plasma missiles.
+- Use the right mouse button to fire the electron beam.
+- Use the space bar to explode the Nuke.
+- Press F5 to enter the shop
+- Press Enter to Start the game
+- Press F1 to enable/disable the ai player (fires plasma missiles)
+- Press Escape to exit the game from the main menu.
+
+- Plasma missiles are in infinite supply.
+- The Electron Beam needs to recharge when used up.
+- There is a infinite supply of nukes (left from the cold 
+war) It takes a number of seconds for a new one is
+ready to be used.
+
+- The Plasma missiles are slow
+- The Electron beam rips apart almost anything it touches.
+- The nuke destroys everything in sight (Causes minor damage to your own
+ship)
+
+
+Shop :
+
+The shop can be controlled using the cursor keys. Use the Enter key
+to purchase upgrades, or repair your ship. Select 'leave' from the
+main menu to return to the battle arena.
+
+Credits :
+
+Game 'engine' Code 		- Nebula / R.v.Etten
+Type based Waypoint system 	- Metalman
+Music 				- Nebula / R.v.Etten
+Graphics 			- Nebula / R.v.Etten
+Design				- What?
+
+
+Code description : 
+
+The game code is based around the waypoint system. Waypoints are are
+network of points in 'space' Like pivots if you will. Objects can be 
+targetted to them and be moved towards them.
+A logical network of waypoints can make it look like objects follow a
+intelligent or recognizable pattern. This game however randomly places 
+waypoints on the screen. But the objects (drones) seem to behave less then 
+random. One waypoint in each assignement loop is placed near the stationary
+player. This causes the objects to move towards the player. The next waypoint,
+which is randomly assigned, will let the objects move away again. This gives
+the effect of a almost kamikaze style attack.
+
+The drones have no visible form of hostility. A zone based collision detection
+linked to a random check, tells the program to draw explosions on the player.
+Further code decreases the shields. 
+
+The electron beam is a series of recorded coordinates jumps. A loop is enabled
+and a value is moved up to the mouse pointer location, while recording the steps
+in a array. These coordinates are then drawn on the screen using two line commands, 
+with some minor random variation.
+
+The Plasma missiles use the same principle, but use Cos and Sin for better movement.
+
+The animations in the game are standalone. After initiation they play until they are
+run though. Wrappers of the initiation are used to initiate more 'complex' looking
+animations.
+
+The bulk of the star scrolling background is tile based. 2 Tiles are created in 
+memory, and get pixels 'randomly' drawn on them. The random method does go through
+a minor grid based loop. The tiles are drawn on the screen using the tileimage 
+command. A very dense 'regular' starfield is drawn on the top as a finishing touch.
+
+The ai player is a small loop that fires plasma missiles towards nodes. It
+fires at the node the objects are moving towards. Random variation is added into
+the targetting. It was a rush job so I had no time to tune it.
+
+The Shop is something that was added at a later point and causes balance issues.
+A galaxy map has been added to the game, but is not integrated with the
+gameplay. The galaxy map has a minor tutorial inside explaining the node based
+pathfinding which is in there.
+
+
+Visit www.Blitzcoder.com for more games.
+
+My other games include :
+
+Kings and Knights (Bare bone Turn based game, modelled after Civ2)
+Platform no4 (More bits platform game)
+Commander Joe (Some sort of sideway shooter)
+Jitterz	(8 Bit Platform game)
