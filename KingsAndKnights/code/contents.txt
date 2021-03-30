@@ -1,0 +1,36 @@
+Contents of the BlitzPlus Example/Tutorial Folder
+
+Created By Nebula in 2003
+
+
+Dir2contents.exe                 712704          File
+alphablending.bb                 10128           File
+astarlib.bb                      8141            File
+bugtest.bb                       110             File
+contents.txt                     0               File
+flowout.bb                       393             File
+gen1.bb                          22059           File
+genback.bb                       22050           File
+guitest.bb                       6713            File
+isoDiplomacy.bb                  17205           File
+isoai.bb                         61613           File
+isocity.bb                       25973           File
+isoeconomy.bb                    7298            File
+isoedit.bb                       16639           File
+isogui.bb                        63488           File
+isoinclude.bb                    109357          File
+isolistbox.bb                    9292            File
+isoloadsave.bb                   6677            File
+isomapgen.bb                     22715           File
+isopath.bb                       7391            File
+isopreset.bb                     39959           File
+isoturnbased.bb                  100347          File
+keydowntest.bb                   118             File
+mapgentest.bb                    5897            File
+pathtesting.bb                   7688            File
+pqueuelib.bb                     5405            File
+screentest.bb                    2101            File
+worklog.bb                       3189            File
+
+Combined Size Of Blitz Basic (bb) files : 581946 bytes.
+Total amount of lines in Blitz Basic (bb) files : 22969 Lines.
