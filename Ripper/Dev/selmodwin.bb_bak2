@@ -1,0 +1,54 @@
+;
+; Selected Objects Modifier Window
+;
+
+
+Function selmodwin()
+SelModwin = CreateWindow("Selected Objects Modifier",102,99,340,200+28,win,1)
+individualWidth = CreateTextField( 43,74,73,19,SelModwin )
+individualHeight = CreateTextField( 43,95,73,19,SelModwin )
+SelObjApply = CreateButton("Apply Settings",118,123,100,27,SelModwin)
+selobj05 = CreateLabel("Individual",40,48,120,21,SelModwin)
+selobj01 = CreateLabel("Width",117,74,40,20,SelModwin)
+selobj02 = CreateLabel("Height",117,94,40,20,SelModwin)
+TotalWidth = CreateTextField( 183,75,73,19,SelModwin )
+TotalHeight = CreateTextField( 183,96,73,19,SelModwin )
+selobj06 = CreateLabel("Total",180,49,120,21,SelModwin)
+selobj03 = CreateLabel("Width",257,75,40,20,SelModwin)
+selobj04 = CreateLabel("Height",257,95,40,20,SelModwin)
+SelObjCancel = CreateButton("Cancel",239,166,93,26,SelModwin)
+
+DisableGadget totalwidth
+DisableGadget totalheight
+
+While exitloop = False
+	WaitEvent()
+	If EventID() = $803 And EventSource() = selmodwin Then exitloop = True
+	If EventID() = $803 And EventSource() = win Then End
+	Select EventID()
+		Case $401
+		If EventSource() = selobjcancel Then
+			exitloop = True	
+		End If
+		If EventSource() = selobjapply Then
+			makenewobjwidth()
+		End If
+	End Select
+Wend
+
+FreeGadget selmodwin
+
+End Function
+
+Function makenewobjwidth()
+w = TextFieldText(individualwidth)
+h = TextFieldText(individualheight)
+If w<0 Or w>1200 Then Return
+If h<0 Or h>1200 Then Return
+For i=0 To numrects
+If rects(i,0) = True Then
+rects(i,rectwidth) = w
+rects(i,rectheight) = h
+End If
+Next
+End Function

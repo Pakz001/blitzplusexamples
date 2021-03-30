@@ -1,0 +1,8 @@
+file = WriteFile("tut.txt")
+WriteString(file,"test")
+CloseFile(file)
+
+
+file = OpenFile("tut.txt")
+
+CloseFile(file)

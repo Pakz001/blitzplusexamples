@@ -1,0 +1,2 @@
+extension block list picture loader.
+bmp jpg png Header check bij picture loader.
