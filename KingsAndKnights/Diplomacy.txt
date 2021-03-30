@@ -1,0 +1,215 @@
+;
+;
+;
+;
+;
+;
+@Diplomacy
+;
+;
+;
+
+;
+@Offer_Remove_Units
+;
+@Offer_Remove_Units_Accept
+Yes please.
+
+;
+@Offer_City
+;
+@Offer_City_Accept
+We kindly accept and will install a ruler
+into this city.
+
+@Offer_City_Reject
+We have no interest in your city.
+
+@Offer_City_Reject_Humiliate
+You must be mad.
+
+;
+@Offer_Trade
+;
+
+@Offer_Trade_Accept
+We kindly accept this trade.
+
+@Offer_Trade_Reject
+No, not at this time.
+
+@Offer_Trade_Reject_Humiliate
+You must be mad.
+
+;
+@Offer_Unit
+;
+@Offer_Unit_Accept
+We thank you for this unit.
+
+@Offer_Unit_Reject_Friendly
+We have all the units we need.
+
+@Offer_Unit_Reject_War
+We are at war and you want to send your
+unit to fight yourself? Go away.
+
+@Offer_Unit_Reject_Humiliate
+Only a fool would Offer this.
+
+;
+@Offer_Gold
+;
+@Offer_Gold_Accept_Friendly
+We kindly accept your offer.
+
+@Offer_Gold_Accept_Normal
+We accept your offer
+
+@Offer_Gold_Reject_Cold
+We have no need for your gold.
+
+@Offer_Gold_Reject_War
+We would not want your gold only your
+destruction.
+
+;
+@Request_Unit
+;
+@Request_Unit_Agree
+The unit is yours.
+
+@Request_Unit_Reject_Friendly
+We cannot afford this.
+
+@Request_Unit_Reject_Cold
+No
+
+@Request_Unit_Reject_Humiliate
+Can you not make your own or are you
+a fool?
+
+;
+@Request_Remove_Units
+;
+@Request_Remove_Units_Agree
+We will remove our units from your lands
+
+@Request_Remove_Units_Reject
+No.
+
+;
+@Request_City
+;
+@Request_City_Agree
+Alright. The city is yours.
+
+@Request_City_Reject
+Never.
+
+@Request_City_Reject_Humiliate
+Only a fool would demand a city.
+
+;
+@Request_Gold
+;
+@Request_Gold_Agree
+We offer you this amount in good will
+
+@Request_Gold_Reject
+No
+
+@Request_Gold_Reject_Humiliate
+It seems you are a bad ruler if you come and
+beg with us.
+
+;
+@Request_Trade
+;
+
+@Request_Trade_Agree_Best
+We agree, Trade will benefit us both greatly.
+
+@Request_Trade_Agree_minor
+Trade would seem to bring us little profit but we
+accept non the less.
+
+@Request_Trade_No
+We do not want to trade with you.
+
+@Request_Trade_No_Becourse_War
+We are at war and you want to trade with us?
+
+@Offer_Trade_Agree_Best
+We accept, This offer is to good to ignore.
+
+@Offer_Trade_Agree_minor
+Ok, not the best offer but profitable non the less
+
+@Offer_Trade_No
+Not interested.
+
+@Offer_Trade_No_Becourse_War
+We are at war and you want to trade with us?
+
+
+
+;
+@Request_Alliance
+;
+@Reject_Alliance
+We have no interest in a alliance.
+
+@Reject_Alliance_Humiliation
+Hahaha. You must be kidding.
+
+@Reject_Alliance_This_Time
+Not at this time.
+
+@Accept_Alliance
+A alliance is in our interest. We Agree.
+
+@Accept_Alliance_If_Give_Gold
+Give us $ Gold and we will agree to a alliance.
+
+;
+@Request_Assistance
+;
+@Give_Assistance
+We will send you a army to relieve you.
+
+@No_Assistance
+No sorry, we will not assist you.
+
+;
+@Declare_War
+;
+@War_Declared
+So be it.
+
+;
+@End_hostilities
+;
+@Reject_Peace_Offer
+You truly believe we want peace? We have no interest in
+peace with you.
+
+@Reject_Peace_Humiliation
+You ignorant peasant. Our armies will destroy your
+empire.
+
+@Reject_Peace_This_Time
+Not at this time. We have other interests at the moment.
+
+@Accept_Peace_If_Return_City
+We agree to a end of hostilities if you return the city
+of $.
+
+@Accept_Peace_Offer
+We agree, this war has lasted long enough. The hostilities
+will end.
+
+
+
+@End
+

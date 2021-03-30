@@ -1,0 +1,1 @@
+kingsandknights.exe -fullscreen

@@ -1,0 +1,97 @@
+;
+; Economy/Production - Created by Rudy van Etten
+;
+;
+; Grass - availability = area of city
+; Forrest - availability = area of city
+; mountains(hills) - availability = area of city
+; Sea		- Availibility = area of city
+;
+;
+; assigner - 'none' = nothing assigned
+;
+; Add more/modify if you like
+;
+; The game is hardcoded to only accept the following order.
+; 1 - @Goods
+; 2 - @Goods_requirements
+; 3 - @Production
+;
+;
+; Tile identifiers ( Grass, Sea, Mountain, forrest)
+;
+; Up to 199 different goods total. No double goods/products.
+;
+;
+; Accepted characters ( a <> Z, 0 <> 9 , '-' '_')
+;
+;
+
+@Economy
+
+@Goods
+;
+; Here the goods are set up- The origin should be duplicated in the @production
+; section.
+;
+;Product	origin		default price	
+Food		,Farm		,1		
+Fish		,Fishery	,1
+Wood		,Forrestry	,2		
+Timber		,Production	,5		
+Cloth		,Production	,2		
+Wull		,Farm		,1		
+Silver		,Mine		,7		
+Tin		,Mine		,5		
+Copper		,Mine		,4		
+Iron		,Iron		,6		
+Salt		,Mine		,3		
+Spices		,import		,19		
+Weapons		,Production	,10		
+Pottery		,Production	,4		
+Glasswork	,Production	,9		
+Clay		,Farm		,1		
+Stone		,Mine		,2		
+Sand		,Farm		,1		
+Steel		,Mine		,8
+
+@Goods_Requirements
+;
+; Req1 to 3 = requirement good for this item. 
+; Amount = number needed of requirement to produce this item
+;
+;Item		,req1	,amount	,req2	,amount	,req3	,amount
+Food		,none	,0	,none	,0	,none	,0
+Wood		,none	,0	,none	,0	,none	,0
+Timber		,wood	,2	,none	,0	,none	,0
+Cloth		,Wull	,1	,none	,0	,none	,0
+Silver		,none	,0	,none	,0	,none	,0
+Tin		,none	,0	,none	,0	,none	,0
+Copper		,none	,0	,none	,0	,none	,0
+Iron		,none	,0	,none	,0	,none	,0
+Salt		,none	,0	,none	,0	,none	,0
+Spices		,none	,0	,none	,0	,none	,0
+Weapons		,Iron	,1	,steel	,1	,none	,0
+Pottery		,clay	,1	,none	,0	,none	,0
+Glasswork	,Sand	,3	,none	,0	,none	,0
+Clay		,none	,0	,none	,0	,none	,0
+Stone		,none	,0	,none	,0	,none	,0
+Sand		,none	,0	,none	,0	,none	,0
+fish		,none	,0	,none	,0	,none	,0
+
+@Production
+;
+; Note :
+; (plan)Implemented 	- Grass - Forrest - Mountains - Sea
+; Not planned yet	- Pines	- Desert - tundra - artic
+;
+;		(Hardcoded)
+;Item		requires	Cost	Produces	Upkeep
+Farm		,grass		,12	,5		,2
+Forresty	,Forrest	,14	,3		,2
+Production	,none		,16	,2		,2
+Mines		,Mountains	,12	,2		,2
+Fishery		,Sea		,9	,2		,2
+
+
+@End
