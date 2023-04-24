@@ -1,0 +1,21 @@
+Not implemented yet
+
+ineedahat       -----  Play game as mario.
+nohatforme      -----  Play game as jitterz.
+monkeybusiness  -----  Infinite health.
+playitsafe      -----  Turns infinite health off.
+warpzone        -----  Brings up level change input.
+openmeup        -----  Opens door on current level.
+airborn         -----  Massive jumping height.
+grounded        -----  Turns massive jumping off.
+ineedshoes      -----  Gives ALL boots.
+barefoot        -----  Gives Jumping boots.
+highwaters      -----  Gives Water boots.
+burnsmyfeet     -----  Gives Fire boots.
+frogskin        -----  Gives Frog boots.
+poopisnice      -----  Gives Poop.
+sledge          -----  Gives Hammer.
+keyring         -----  Gives Key.
+valentine       -----  Give Heart.
+hurtmeplenty    -----  Takes away a heart.
+

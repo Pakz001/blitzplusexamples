@@ -1,0 +1,12 @@
+This game is currently partly functional. 
+
+Game currently features : Quality 8 bit art by and (c) Vertigo, some non animated ai players, push blocks, 
+player animations, ice slides, springs, sfx, music, fully featured custom editor.
+
+Refitted for B+
+
+
+
+Idea/Art : Vertigo
+Coding/Music : Nebula
+
