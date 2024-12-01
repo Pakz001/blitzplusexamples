@@ -1,0 +1,232 @@
+@First Message
+Welcome to Ripper
+
+Ripper is a tool based slightly on Smartdraw. The tool
+is written to allow myself to design user interfaces
+quickly. Ripper does this quite well.
+
+Ripper can generate custom code for your programming
+language. What it does is replace occurences of keywords
+in preset strings.
+
+For instance the string :
+
+myguidrawwindow(x1,y1,width,height,string)
+
+becomes
+
+myguidrawwindow(25,25,320,240,"mytitle")
+
+Ripper is still in its development phase. More features
+will probably be added over time.
+
+Read thru the tutorial any time to learn more
+about the program
+
+
+
+
+
+@Creating a Object
+Creating a object.
+
+Ripper uses objects. Objects are shown as rectangular
+areas on the screen. The Objects view allows you to
+insert information into them.
+
+You can create a object by going into Edit Mode -
+shown in the Edit Window and drawing a rectangle
+on the canvas. You can then activate a object by
+pressing record.
+
+@Objects Editor
+The Objects Editor contains the information of your
+objects. The main tab view shows you the following
+things :
+
+Main View
+
+Object #x 	-	The current object, use 
+			the slider to move between
+			objects.
+
+Area Text 	-	The text shown inside the
+			rectangle.
+X1		-	The x location of the object
+			on the canvas.
+Y1		-	The y location of the object
+			on the canvas.
+X2		-	The right outer edge of the
+			object.
+Y2		- 	The bottom outer edge of the
+			object.
+Width		-	The width of the object.
+Height		-	The height of the object.
+Object Type	-	The type of object you want
+			it to be depending on the
+			configuration.
+Record Current	-	Record ontop of the current
+			object.
+Record + New	-	Record ontop of the current
+			object and move the object view
+			to a new empty object.
+New Object	-	Move the object view to a
+			empty object.
+Delete Object	-	Deletes the current object.
+Hide Object	-	Hides or Unhides the current
+			object.
+Unhide All	-	Unhide all objects.
+
+Extra View :
+
+Object Number	-	Give this object a number.
+Object Name	-	Give this object a name.
+Group to	-	Group to a other objects
+			coordinates.
+
+
+
+
+
+@Generator
+The output Generator
+
+What the generator does is make a textfile out of the
+objects information. It does this by using key strings
+that objects point to. The key strings contain keywords
+that the generator uses to fill in the objects
+information.
+
+Keywords are : 
+
+x1
+y1
+x2
+y2
+width
+height
+name
+group
+string
+#num
+#id
+
+Each keyword will be replaced by the objects
+information.
+
+You can create new strings using these keywords by 
+pressing 'add new' or edit the current strings.
+Strings will be saved when you save the programs
+configuration from the file menu.
+
+Press Generate to create the code. Copy the text out
+of the window and paste it in your code editor.
+
+@Main View
+Main View
+
+The main view of the program consists of a grid display
+and Tool windows.
+
+The grid is a 2*1024 by 2*768 screen. It can be moved
+using the sliders or using the middle mouse button.
+
+The tool windows are :
+
+Edit Window 	-	Here you can select which mode
+			to use. Selection or Creation.
+Objects Editor	-	This is the window that 
+			displays the object information.
+			The contents can also be
+			edited.
+OverView	-	This is a small view of the
+			entire canvas. You can see
+			where on the canvas you are
+			and by pressing the left mouse
+			button on this window move
+			to that area of the canvas.
+
+
+The main Toolbar
+
+The main view also has a toolbar. Here you can create
+a new Project (Erases the current one). Cut the
+current selection. Copy the current Selection and
+Paste the objects you have in memory.
+
+
+@Pull Down Menu
+Pull Down Menu
+
+The pull down menu contains a number of shortcuts that
+you can use.
+
+File
+--Open Image		-	Open up a background
+				picture.
+--Clear Image		-	Clear the background
+				picture
+--Set Background color	-	Change/Select the color
+				of the background.
+--Load Settings		-	Loads the settings
+--Save Settings		-	Saves the current
+				settings. (Including
+				generator data)
+--About			-	Shows some info.
+--End			-	Quits the program.
+
+View			
+--Show			-	Show various windows.
+--Hide			-	hide various windows.
+--Grid			-	Show/Hide Grid.
+
+Selection
+--Display		-	Change several colors
+				of the editor.
+--Selected		-	Selection tools.
+----Copy		-	Copies the currently 
+				selected objects.
+----Paste		-	Paste the last copied
+				objects.
+----Hide		-	Hides the currently
+				selected objects.
+----Delete		-	Deletes the currently
+				selected objects
+
+Objects			-	Some objects tools.
+--Show All		-	Set all objects to
+				visible.
+--Hide All		-	Set all objects to
+				invisible.
+--Invert		-	Invert the visibility
+				on all objects.
+--Delete All		-	Delete all Objects.
+--Move to Front		-	Move current selected
+				object to the front.
+--Move to back		-	Move the current 
+				selected object to 
+				the background.
+--Load Objects		-	Load previous saved 
+				objects.
+--Save Objects		-	Save current objects.
+
+Picture			-	Background picture
+				tools.
+--Set to 0,0		-	Reset the background
+				picture to the top
+				left position.
+--Set transparent color	-	Set the transparent
+				color of the background
+				image.
+--lock/unlock picture	-	Allow moving of the
+				background picture or
+				lock it.
+
+Generator		-	Show the Generation
+				window.
+
+
+
+
+
+

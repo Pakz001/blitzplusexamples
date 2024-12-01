@@ -1,0 +1,14 @@
+Version 0.1c and higher
+
+Interface Ripper/Builder with Code Generator
+
+By Rudy 'nebula' van Etten in 2003
+
+Blitz+ Sourcecode included.
+
+I Needed a nice way to quickly create interfaces for
+my game. 
+
+
+Output code customizable thru code generator.
+
